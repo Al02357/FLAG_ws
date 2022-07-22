@@ -1,0 +1,2 @@
+set(fsm_MESSAGE_FILES "/home/flag/FLAG_ws/src/fsm/msg/command_acc.msg")
+set(fsm_SERVICE_FILES "")

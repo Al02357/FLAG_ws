@@ -1,0 +1,8 @@
+prefix=/home/flag/FLAG_ws/install
+
+Name: circle_recognition
+Description: Description of circle_recognition
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

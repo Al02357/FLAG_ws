@@ -1,0 +1,2 @@
+apriltag_ros:circle_recognition:fiesta:fsm:grid_path_searcher:plan_env:realsense_ros_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/flag/FLAG_ws/devel -DCMAKE_INSTALL_PREFIX=/home/flag/FLAG_ws/install -G Unix Makefiles

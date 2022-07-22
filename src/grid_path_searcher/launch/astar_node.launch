@@ -1,0 +1,26 @@
+<launch>
+
+<arg name="map_size_x" default="50.0"/>
+<arg name="map_size_y" default="50.0"/>
+<arg name="map_size_z" default=" 5.0"/>
+
+<arg name="start_x" default=" 0.0"/>
+<arg name="start_y" default=" 0.0"/>
+<!-- <arg name="start_z" default=" 1.0"/> -->
+
+  <node pkg="grid_path_searcher" type="astar_node" name="astar_node" output="screen" required = "true">
+     <!-- FIXME 修改remap -->
+      <remap from="~waypoints"       to="/waypoint_generator/waypoints"/>
+      <remap from="~map"                   to="/fiesta/ESDFMap/occ_pc"/> 
+      <remap from="~pose"                   to="/mavros/local_position/pose"/> 
+
+      <param name="map/resolution"   value="0.2" />
+      <param name="map/x_size"       value="$(arg map_size_x)"/>
+      <param name="map/y_size"       value="$(arg map_size_y)"/>
+      <!-- <param name="map/z_size"       value="$(arg map_size_z)"/> -->
+
+      <param name="planning/start_x" value="$(arg start_x)"/>
+      <param name="planning/start_y" value="$(arg start_y)"/>
+      <!-- <param name="planning/start_z" value="$(arg start_z)"/> -->
+  </node>
+</launch>
