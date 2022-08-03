@@ -283,8 +283,7 @@ int main(int argc, char **argv)
     ros::Subscriber realsense_sub = nh.subscribe<tf2_msgs::TFMessage>("/tf", 1000, realsense_cb);
 
     //【订阅】t265估计位置
-    // ros::Subscriber t265_sub = nh.subscribe<nav_msgs::Odometry>("/t265/odom/sample", 10, t265_cb);
-    ros::Subscriber t265_sub = nh.subscribe<nav_msgs::Odometry>("/mavros/odometry/in", 10, t265_cb);
+    ros::Subscriber t265_sub = nh.subscribe<nav_msgs::Odometry>("/t265/odom/sample", 10, t265_cb);
 
     //【订阅】VINS数据
     //ros::Subscriber VINS_sub = nh.subscribe<nav_msgs::Odometry>("/VIO/odom", 10, VINS_cb);
@@ -298,8 +297,6 @@ int main(int argc, char **argv)
     // 【订阅】optitrack估计位置
     ros::Subscriber optitrack_sub = nh.subscribe<geometry_msgs::PoseStamped>("/vrpn_client_node/uav0/pose", 1000, optitrack_cb);
 
-    // // 【订阅】gazebo仿真位置
-    // ros::Subscriber gazebo_sub = nh.subscribe<>
     // 【订阅】无人机当前位置 坐标系:NED系 [室外：GPS，室内：自主定位或mocap等] 这里订阅仅作比较用
     ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, pos_cb);
 

@@ -90,6 +90,16 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -100,16 +110,6 @@ test:
 test/fast: test
 
 .PHONY : test/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
 
 # Special rule for the target install/strip
 install/strip: preinstall
@@ -288,21 +288,6 @@ fsm_gennodejs/fast:
 .PHONY : fsm_gennodejs/fast
 
 # Convenience name for target.
-fsm/CMakeFiles/offboard_test.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fsm/CMakeFiles/offboard_test.dir/rule
-.PHONY : fsm/CMakeFiles/offboard_test.dir/rule
-
-# Convenience name for target.
-offboard_test: fsm/CMakeFiles/offboard_test.dir/rule
-
-.PHONY : offboard_test
-
-# fast build rule for target.
-offboard_test/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fsm/CMakeFiles/offboard_test.dir/build.make fsm/CMakeFiles/offboard_test.dir/build
-.PHONY : offboard_test/fast
-
-# Convenience name for target.
 fsm/CMakeFiles/fsm_generate_messages_py.dir/rule:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fsm/CMakeFiles/fsm_generate_messages_py.dir/rule
 .PHONY : fsm/CMakeFiles/fsm_generate_messages_py.dir/rule
@@ -407,33 +392,6 @@ px4_pos_estimator/fast:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f fsm/CMakeFiles/px4_pos_estimator.dir/build.make fsm/CMakeFiles/px4_pos_estimator.dir/build
 .PHONY : px4_pos_estimator/fast
 
-src/offboard_test.o: src/offboard_test.cpp.o
-
-.PHONY : src/offboard_test.o
-
-# target to build an object file
-src/offboard_test.cpp.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fsm/CMakeFiles/offboard_test.dir/build.make fsm/CMakeFiles/offboard_test.dir/src/offboard_test.cpp.o
-.PHONY : src/offboard_test.cpp.o
-
-src/offboard_test.i: src/offboard_test.cpp.i
-
-.PHONY : src/offboard_test.i
-
-# target to preprocess a source file
-src/offboard_test.cpp.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fsm/CMakeFiles/offboard_test.dir/build.make fsm/CMakeFiles/offboard_test.dir/src/offboard_test.cpp.i
-.PHONY : src/offboard_test.cpp.i
-
-src/offboard_test.s: src/offboard_test.cpp.s
-
-.PHONY : src/offboard_test.s
-
-# target to generate assembly for a file
-src/offboard_test.cpp.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fsm/CMakeFiles/offboard_test.dir/build.make fsm/CMakeFiles/offboard_test.dir/src/offboard_test.cpp.s
-.PHONY : src/offboard_test.cpp.s
-
 src/px4_pos_estimator.o: src/px4_pos_estimator.cpp.o
 
 .PHONY : src/px4_pos_estimator.o
@@ -524,17 +482,16 @@ help:
 	@echo "... install"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... test"
 	@echo "... fsm_generate_messages_eus"
 	@echo "... list_install_components"
 	@echo "... fsm_generate_messages_nodejs"
+	@echo "... test"
 	@echo "... fsm_generate_messages"
 	@echo "... fsm_generate_messages_cpp"
 	@echo "... fsm_genlisp"
 	@echo "... _fsm_generate_messages_check_deps_command_acc"
 	@echo "... fsm_generate_messages_lisp"
 	@echo "... fsm_gennodejs"
-	@echo "... offboard_test"
 	@echo "... fsm_generate_messages_py"
 	@echo "... install/strip"
 	@echo "... fsm_genpy"
@@ -544,9 +501,6 @@ help:
 	@echo "... fsm_geneus"
 	@echo "... single_offboard"
 	@echo "... px4_pos_estimator"
-	@echo "... src/offboard_test.o"
-	@echo "... src/offboard_test.i"
-	@echo "... src/offboard_test.s"
 	@echo "... src/px4_pos_estimator.o"
 	@echo "... src/px4_pos_estimator.i"
 	@echo "... src/px4_pos_estimator.s"

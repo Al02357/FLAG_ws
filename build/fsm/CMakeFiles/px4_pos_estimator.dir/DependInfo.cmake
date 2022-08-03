@@ -19,12 +19,14 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/flag/FLAG_ws/devel/include"
   "/home/flag/FLAG_ws/src/fsm/include"
+  "/home/flag/FLAG_ws/src/bspline_race/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/flag/FLAG_ws/build/bspline_race/CMakeFiles/bspline_race.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

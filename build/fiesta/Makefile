@@ -56,6 +56,30 @@ CMAKE_BINARY_DIR = /home/flag/FLAG_ws/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -77,28 +101,16 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
 
-# Special rule for the target test
-test/fast: test
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
 
-.PHONY : test/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
+.PHONY : edit_cache/fast
 
 # Special rule for the target install/local
 install/local: preinstall
@@ -112,28 +124,16 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
 
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
+# Special rule for the target test
+test/fast: test
 
-.PHONY : edit_cache/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
+.PHONY : test/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -168,529 +168,121 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
-.PHONY : fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
+fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
+.PHONY : fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-tf2_msgs_generate_messages_py: fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
+sensor_msgs_generate_messages_eus: fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
 
-.PHONY : tf2_msgs_generate_messages_py
+.PHONY : sensor_msgs_generate_messages_eus
 
 # fast build rule for target.
-tf2_msgs_generate_messages_py/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/build.make fiesta/CMakeFiles/tf2_msgs_generate_messages_py.dir/build
-.PHONY : tf2_msgs_generate_messages_py/fast
+sensor_msgs_generate_messages_eus/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make fiesta/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+.PHONY : sensor_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
-fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
-.PHONY : fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
+fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
+.PHONY : fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-tf2_msgs_generate_messages_cpp: fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
+sensor_msgs_generate_messages_lisp: fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
 
-.PHONY : tf2_msgs_generate_messages_cpp
+.PHONY : sensor_msgs_generate_messages_lisp
 
 # fast build rule for target.
-tf2_msgs_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build
-.PHONY : tf2_msgs_generate_messages_cpp/fast
+sensor_msgs_generate_messages_lisp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
+.PHONY : sensor_msgs_generate_messages_lisp/fast
 
 # Convenience name for target.
-fiesta/CMakeFiles/actionlib_generate_messages_py.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_generate_messages_py.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_generate_messages_py.dir/rule
+fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
+.PHONY : fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
 
 # Convenience name for target.
-actionlib_generate_messages_py: fiesta/CMakeFiles/actionlib_generate_messages_py.dir/rule
+sensor_msgs_generate_messages_nodejs: fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
 
-.PHONY : actionlib_generate_messages_py
+.PHONY : sensor_msgs_generate_messages_nodejs
 
 # fast build rule for target.
-actionlib_generate_messages_py/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_generate_messages_py.dir/build.make fiesta/CMakeFiles/actionlib_generate_messages_py.dir/build
-.PHONY : actionlib_generate_messages_py/fast
+sensor_msgs_generate_messages_nodejs/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
+.PHONY : sensor_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
-fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
+fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
+.PHONY : fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-actionlib_generate_messages_nodejs: fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
+sensor_msgs_generate_messages_cpp: fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
 
-.PHONY : actionlib_generate_messages_nodejs
+.PHONY : sensor_msgs_generate_messages_cpp
 
 # fast build rule for target.
-actionlib_generate_messages_nodejs/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
-.PHONY : actionlib_generate_messages_nodejs/fast
+sensor_msgs_generate_messages_cpp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+.PHONY : sensor_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
-fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
+fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
+.PHONY : fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
 
 # Convenience name for target.
-actionlib_generate_messages_lisp: fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
+sensor_msgs_generate_messages_py: fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
 
-.PHONY : actionlib_generate_messages_lisp
+.PHONY : sensor_msgs_generate_messages_py
 
 # fast build rule for target.
-actionlib_generate_messages_lisp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/actionlib_generate_messages_lisp.dir/build
-.PHONY : actionlib_generate_messages_lisp/fast
+sensor_msgs_generate_messages_py/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make fiesta/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
+.PHONY : sensor_msgs_generate_messages_py/fast
 
 # Convenience name for target.
-fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/rule
+fiesta/CMakeFiles/mapping.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/mapping.dir/rule
+.PHONY : fiesta/CMakeFiles/mapping.dir/rule
 
 # Convenience name for target.
-actionlib_generate_messages_eus: fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/rule
+mapping: fiesta/CMakeFiles/mapping.dir/rule
 
-.PHONY : actionlib_generate_messages_eus
+.PHONY : mapping
 
 # fast build rule for target.
-actionlib_generate_messages_eus/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/build.make fiesta/CMakeFiles/actionlib_generate_messages_eus.dir/build
-.PHONY : actionlib_generate_messages_eus/fast
+mapping/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/mapping.dir/build.make fiesta/CMakeFiles/mapping.dir/build
+.PHONY : mapping/fast
 
-# Convenience name for target.
-fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
-.PHONY : fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+src/main.o: src/main.cpp.o
 
-# Convenience name for target.
-nav_msgs_generate_messages_py: fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
-
-.PHONY : nav_msgs_generate_messages_py
-
-# fast build rule for target.
-nav_msgs_generate_messages_py/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make fiesta/CMakeFiles/nav_msgs_generate_messages_py.dir/build
-.PHONY : nav_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/test_fiesta.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/test_fiesta.dir/rule
-.PHONY : fiesta/CMakeFiles/test_fiesta.dir/rule
-
-# Convenience name for target.
-test_fiesta: fiesta/CMakeFiles/test_fiesta.dir/rule
-
-.PHONY : test_fiesta
-
-# fast build rule for target.
-test_fiesta/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/build
-.PHONY : test_fiesta/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-.PHONY : fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_nodejs: fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-tf2_msgs_generate_messages_nodejs/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build
-.PHONY : tf2_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-.PHONY : fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_nodejs: fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/rule
-
-.PHONY : tf_generate_messages_nodejs
-
-# fast build rule for target.
-tf_generate_messages_nodejs/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/tf_generate_messages_nodejs.dir/build
-.PHONY : tf_generate_messages_nodejs/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
-.PHONY : fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-nav_msgs_generate_messages_cpp: fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : nav_msgs_generate_messages_cpp
-
-# fast build rule for target.
-nav_msgs_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build
-.PHONY : nav_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-.PHONY : fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-nav_msgs_generate_messages_nodejs: fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : nav_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-nav_msgs_generate_messages_nodejs/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
-.PHONY : nav_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-.PHONY : fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_lisp: fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_lisp
-
-# fast build rule for target.
-tf2_msgs_generate_messages_lisp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build
-.PHONY : tf2_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
-.PHONY : fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-nav_msgs_generate_messages_eus: fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
-
-.PHONY : nav_msgs_generate_messages_eus
-
-# fast build rule for target.
-nav_msgs_generate_messages_eus/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/build.make fiesta/CMakeFiles/nav_msgs_generate_messages_eus.dir/build
-.PHONY : nav_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_eus: fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_eus
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_eus/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build.make fiesta/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build
-.PHONY : actionlib_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_lisp: fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_lisp
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_lisp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
-.PHONY : actionlib_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf_generate_messages_py.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf_generate_messages_py.dir/rule
-.PHONY : fiesta/CMakeFiles/tf_generate_messages_py.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_py: fiesta/CMakeFiles/tf_generate_messages_py.dir/rule
-
-.PHONY : tf_generate_messages_py
-
-# fast build rule for target.
-tf_generate_messages_py/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf_generate_messages_py.dir/build.make fiesta/CMakeFiles/tf_generate_messages_py.dir/build
-.PHONY : tf_generate_messages_py/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_nodejs: fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_nodejs/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build.make fiesta/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build
-.PHONY : actionlib_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_py: fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_py
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_py/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build.make fiesta/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build
-.PHONY : actionlib_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-.PHONY : fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_eus: fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_eus
-
-# fast build rule for target.
-tf2_msgs_generate_messages_eus/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make fiesta/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
-.PHONY : tf2_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
-.PHONY : fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-nav_msgs_generate_messages_lisp: fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : nav_msgs_generate_messages_lisp
-
-# fast build rule for target.
-nav_msgs_generate_messages_lisp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
-.PHONY : nav_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf_generate_messages_lisp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf_generate_messages_lisp.dir/rule
-.PHONY : fiesta/CMakeFiles/tf_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_lisp: fiesta/CMakeFiles/tf_generate_messages_lisp.dir/rule
-
-.PHONY : tf_generate_messages_lisp
-
-# fast build rule for target.
-tf_generate_messages_lisp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf_generate_messages_lisp.dir/build.make fiesta/CMakeFiles/tf_generate_messages_lisp.dir/build
-.PHONY : tf_generate_messages_lisp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf_generate_messages_cpp.dir/rule
-.PHONY : fiesta/CMakeFiles/tf_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_cpp: fiesta/CMakeFiles/tf_generate_messages_cpp.dir/rule
-
-.PHONY : tf_generate_messages_cpp
-
-# fast build rule for target.
-tf_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/tf_generate_messages_cpp.dir/build
-.PHONY : tf_generate_messages_cpp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_cpp: fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_cpp
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
-.PHONY : actionlib_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/tf_generate_messages_eus.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/tf_generate_messages_eus.dir/rule
-.PHONY : fiesta/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_eus: fiesta/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-.PHONY : tf_generate_messages_eus
-
-# fast build rule for target.
-tf_generate_messages_eus/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/tf_generate_messages_eus.dir/build.make fiesta/CMakeFiles/tf_generate_messages_eus.dir/build
-.PHONY : tf_generate_messages_eus/fast
-
-# Convenience name for target.
-fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
-.PHONY : fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_cpp: fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
-
-.PHONY : actionlib_generate_messages_cpp
-
-# fast build rule for target.
-actionlib_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make fiesta/CMakeFiles/actionlib_generate_messages_cpp.dir/build
-.PHONY : actionlib_generate_messages_cpp/fast
-
-src/ESDFMap.o: src/ESDFMap.cpp.o
-
-.PHONY : src/ESDFMap.o
+.PHONY : src/main.o
 
 # target to build an object file
-src/ESDFMap.cpp.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/ESDFMap.cpp.o
-.PHONY : src/ESDFMap.cpp.o
+src/main.cpp.o:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/mapping.dir/build.make fiesta/CMakeFiles/mapping.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
 
-src/ESDFMap.i: src/ESDFMap.cpp.i
+src/main.i: src/main.cpp.i
 
-.PHONY : src/ESDFMap.i
-
-# target to preprocess a source file
-src/ESDFMap.cpp.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/ESDFMap.cpp.i
-.PHONY : src/ESDFMap.cpp.i
-
-src/ESDFMap.s: src/ESDFMap.cpp.s
-
-.PHONY : src/ESDFMap.s
-
-# target to generate assembly for a file
-src/ESDFMap.cpp.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/ESDFMap.cpp.s
-.PHONY : src/ESDFMap.cpp.s
-
-src/parameters.o: src/parameters.cpp.o
-
-.PHONY : src/parameters.o
-
-# target to build an object file
-src/parameters.cpp.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/parameters.cpp.o
-.PHONY : src/parameters.cpp.o
-
-src/parameters.i: src/parameters.cpp.i
-
-.PHONY : src/parameters.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-src/parameters.cpp.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/parameters.cpp.i
-.PHONY : src/parameters.cpp.i
+src/main.cpp.i:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/mapping.dir/build.make fiesta/CMakeFiles/mapping.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-src/parameters.s: src/parameters.cpp.s
+src/main.s: src/main.cpp.s
 
-.PHONY : src/parameters.s
-
-# target to generate assembly for a file
-src/parameters.cpp.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/parameters.cpp.s
-.PHONY : src/parameters.cpp.s
-
-src/raycast.o: src/raycast.cpp.o
-
-.PHONY : src/raycast.o
-
-# target to build an object file
-src/raycast.cpp.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/raycast.cpp.o
-.PHONY : src/raycast.cpp.o
-
-src/raycast.i: src/raycast.cpp.i
-
-.PHONY : src/raycast.i
-
-# target to preprocess a source file
-src/raycast.cpp.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/raycast.cpp.i
-.PHONY : src/raycast.cpp.i
-
-src/raycast.s: src/raycast.cpp.s
-
-.PHONY : src/raycast.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-src/raycast.cpp.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/raycast.cpp.s
-.PHONY : src/raycast.cpp.s
-
-src/timing.o: src/timing.cc.o
-
-.PHONY : src/timing.o
-
-# target to build an object file
-src/timing.cc.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/timing.cc.o
-.PHONY : src/timing.cc.o
-
-src/timing.i: src/timing.cc.i
-
-.PHONY : src/timing.i
-
-# target to preprocess a source file
-src/timing.cc.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/timing.cc.i
-.PHONY : src/timing.cc.i
-
-src/timing.s: src/timing.cc.s
-
-.PHONY : src/timing.s
-
-# target to generate assembly for a file
-src/timing.cc.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/src/timing.cc.s
-.PHONY : src/timing.cc.s
-
-test/test_fiesta.o: test/test_fiesta.cpp.o
-
-.PHONY : test/test_fiesta.o
-
-# target to build an object file
-test/test_fiesta.cpp.o:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/test/test_fiesta.cpp.o
-.PHONY : test/test_fiesta.cpp.o
-
-test/test_fiesta.i: test/test_fiesta.cpp.i
-
-.PHONY : test/test_fiesta.i
-
-# target to preprocess a source file
-test/test_fiesta.cpp.i:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/test/test_fiesta.cpp.i
-.PHONY : test/test_fiesta.cpp.i
-
-test/test_fiesta.s: test/test_fiesta.cpp.s
-
-.PHONY : test/test_fiesta.s
-
-# target to generate assembly for a file
-test/test_fiesta.cpp.s:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/test_fiesta.dir/build.make fiesta/CMakeFiles/test_fiesta.dir/test/test_fiesta.cpp.s
-.PHONY : test/test_fiesta.cpp.s
+src/main.cpp.s:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f fiesta/CMakeFiles/mapping.dir/build.make fiesta/CMakeFiles/mapping.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -698,54 +290,22 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
+	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... test"
-	@echo "... tf2_msgs_generate_messages_py"
-	@echo "... install/strip"
-	@echo "... tf2_msgs_generate_messages_cpp"
-	@echo "... actionlib_generate_messages_py"
-	@echo "... actionlib_generate_messages_nodejs"
-	@echo "... actionlib_generate_messages_lisp"
-	@echo "... actionlib_generate_messages_eus"
-	@echo "... nav_msgs_generate_messages_py"
-	@echo "... install/local"
-	@echo "... test_fiesta"
-	@echo "... tf2_msgs_generate_messages_nodejs"
-	@echo "... tf_generate_messages_nodejs"
-	@echo "... nav_msgs_generate_messages_cpp"
-	@echo "... nav_msgs_generate_messages_nodejs"
-	@echo "... tf2_msgs_generate_messages_lisp"
-	@echo "... nav_msgs_generate_messages_eus"
-	@echo "... actionlib_msgs_generate_messages_eus"
-	@echo "... actionlib_msgs_generate_messages_lisp"
-	@echo "... tf_generate_messages_py"
-	@echo "... actionlib_msgs_generate_messages_nodejs"
-	@echo "... actionlib_msgs_generate_messages_py"
 	@echo "... edit_cache"
-	@echo "... tf2_msgs_generate_messages_eus"
-	@echo "... nav_msgs_generate_messages_lisp"
-	@echo "... tf_generate_messages_lisp"
-	@echo "... tf_generate_messages_cpp"
-	@echo "... install"
-	@echo "... actionlib_msgs_generate_messages_cpp"
-	@echo "... tf_generate_messages_eus"
-	@echo "... actionlib_generate_messages_cpp"
-	@echo "... src/ESDFMap.o"
-	@echo "... src/ESDFMap.i"
-	@echo "... src/ESDFMap.s"
-	@echo "... src/parameters.o"
-	@echo "... src/parameters.i"
-	@echo "... src/parameters.s"
-	@echo "... src/raycast.o"
-	@echo "... src/raycast.i"
-	@echo "... src/raycast.s"
-	@echo "... src/timing.o"
-	@echo "... src/timing.i"
-	@echo "... src/timing.s"
-	@echo "... test/test_fiesta.o"
-	@echo "... test/test_fiesta.i"
-	@echo "... test/test_fiesta.s"
+	@echo "... install/local"
+	@echo "... test"
+	@echo "... sensor_msgs_generate_messages_eus"
+	@echo "... sensor_msgs_generate_messages_lisp"
+	@echo "... sensor_msgs_generate_messages_nodejs"
+	@echo "... sensor_msgs_generate_messages_cpp"
+	@echo "... sensor_msgs_generate_messages_py"
+	@echo "... mapping"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

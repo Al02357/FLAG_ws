@@ -362,6 +362,7 @@ grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /home/flag/FL
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /home/flag/FLAG_ws/src/grid_path_searcher/src/astar_node.cpp
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point.h
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point32.h
+grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/PointStamped.h
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/Pose.h
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
 grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseWithCovariance.h

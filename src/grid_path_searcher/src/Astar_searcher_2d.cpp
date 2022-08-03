@@ -3,7 +3,7 @@
 using namespace std;
 using namespace Eigen;
 bool tie_break = false;
-GridNodePtr2d firstPtr  = NULL;
+// GridNodePtr2d firstPtr  = NULL;
 void AstarPathFinder2d::initGridMap(double _resolution, Vector2d global_xyz_l, Vector2d global_xyz_u, int max_x_id, int max_y_id)
 {   
     gl_xl = global_xyz_l(0);
@@ -43,10 +43,10 @@ void AstarPathFinder2d::resetGrid(GridNodePtr2d ptr)
     //USAGE 将点ptr的id置0，即不在open/closedlist中
     ptr->id = 0;
     ptr->cameFrom = NULL;
-    ptr->twistFrom = NULL;
-    first_node_expanded = false;
-    firstPtr = NULL;
-    ptr->cameFrom_Slash = 0;
+    // ptr->twistFrom = NULL;
+    // first_node_expanded = false;
+    // firstPtr = NULL;
+    // ptr->cameFrom_Slash = 0;
     ptr->gScore = inf;
     ptr->fScore = inf;
 }
@@ -71,14 +71,32 @@ void AstarPathFinder2d::setObs(const double coord_x, const double coord_y)
     int idx_x = static_cast<int>( (coord_x - gl_xl) * inv_resolution);
     int idx_y = static_cast<int>( (coord_y - gl_yl) * inv_resolution);
 
+    //中心点
     data[idx_x * GLY_SIZE + idx_y] = 1;
+
+    //膨胀一圈
+    data[(idx_x-1)  * GLY_SIZE + idx_y+1] = 1;
+    data[(idx_x-1)  * GLY_SIZE + idx_y] = 1;
+    data[(idx_x-1)  * GLY_SIZE + idx_y-1] = 1;
+    data[idx_x         * GLY_SIZE + idx_y+1] = 1;
+// data[idx_x         * GLY_SIZE + idx_y] = 1;
+    data[idx_x         * GLY_SIZE + idx_y-1] = 1;
+    data[(idx_x+1) * GLY_SIZE + idx_y+1] = 1;
+    data[(idx_x+1) * GLY_SIZE + idx_y] = 1;
+    data[(idx_x+1) * GLY_SIZE + idx_y-1] = 1;
+    
+
 }
 void AstarPathFinder2d::cleanObs()
 {   
     for(int i = 0;i<GLXY_SIZE;i++){
         data[i] = 0;
     }
-    // std::cout<<"Obs successfully cleaned!"<<endl;
+}
+void AstarPathFinder2d::cleanStartObs(Eigen::Vector2d _start_pt){
+    Eigen::Vector2i pt;
+    pt = coord2gridIndex(_start_pt);
+    data[pt(0) * GLY_SIZE + pt(1)] = 0;
 }
 
 vector<Vector2d> AstarPathFinder2d::getVisitedNodes()
@@ -144,6 +162,14 @@ inline bool AstarPathFinder2d::isFree(const int & idx_x, const int & idx_y) cons
     return (idx_x >= 0 && idx_x < GLX_SIZE && idx_y >= 0 && idx_y < GLY_SIZE  && 
            (data[idx_x * GLY_SIZE + idx_y] < 1));
 }
+bool AstarPathFinder2d::getData(const Eigen::Vector2d & pt)
+{
+    return isOccupied(coord2gridIndex(pt));
+}
+bool AstarPathFinder2d::getData(const Eigen::Vector2i & pt)
+{
+    return isOccupied(pt);
+}
 
 //TODO 
 //AstarGetSucc函数
@@ -196,7 +222,7 @@ inline void AstarPathFinder2d::AstarGetSucc(GridNodePtr2d currentPtr, vector<Gri
                     if(isOccupied(n_x-i, n_y)&&isOccupied(n_x, n_y-j)) continue;
                 }
                 //Twist
-                temp_ptr->cameFrom_Slash = twistTest(i,j);
+                // temp_ptr->cameFrom_Slash = twistTest(i,j);
                 // if(temp_ptr->id == 0) temp_ptr->cameFrom_Slash = -1;
 
                 n_coord = temp_ptr->coord;
@@ -274,7 +300,7 @@ double AstarPathFinder2d::getHeu(GridNodePtr2d node1, GridNodePtr2d node2)
 
 //TODO 寻找路径函数
 // A*路径搜索
-void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
+bool AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
 {   
     ros::Time time_1 = ros::Time::now();    
 
@@ -354,12 +380,12 @@ void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
         int y = openSet.begin()->second->index(1); 
         openSet.erase(openSet.begin());//删除指定键值对
         currentPtr = GridNodeMap[x][y];//当前👈
-        if(!first_node_expanded){
-            //使得第一个节点👈自己
-            currentPtr->twistFrom = currentPtr;
-            first_node_expanded = true;
-            firstPtr = currentPtr;
-        }
+        // if(!first_node_expanded){
+        //     //使得第一个节点👈自己
+        //     currentPtr->twistFrom = currentPtr;
+        //     first_node_expanded = true;
+        //     firstPtr = currentPtr;
+        // }
         
 
         // 如果节点被访问过;则返回
@@ -381,7 +407,7 @@ void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
             terminatePtr = currentPtr;
             // terminatePtr->twistFrom = currentPtr->cameFrom;
             ROS_WARN("[A*]{sucess}  Time in A*  is %f ms, path cost if %f m", (time_2 - time_1).toSec() * 1000.0, currentPtr->gScore * resolution );            
-            return;
+            return 1;
         }
             
         //get the succetion
@@ -419,17 +445,16 @@ void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
                 *        
                 */
                 // shall update: gScore = inf; fScore = inf; cameFrom = NULL, id, mayby direction
-
                 neighborPtr->gScore = currentPtr->gScore + edgeCostSets[i];//步数损失
                 neighborPtr->fScore = neighborPtr->gScore + getHeu(neighborPtr,endPtr);//启发式
                 neighborPtr->cameFrom = currentPtr; // todo shallow copy or deep copy
-                if(currentPtr->cameFrom_Slash!=neighborPtr->cameFrom_Slash){
-                    //若发生转折
-                    neighborPtr->twistFrom = currentPtr;
-                }
-                else{
-                    neighborPtr->twistFrom = currentPtr->twistFrom;
-                }
+                // if(currentPtr->cameFrom_Slash!=neighborPtr->cameFrom_Slash){
+                //     //若发生转折
+                //     neighborPtr->twistFrom = currentPtr;
+                // }
+                // else{
+                //     neighborPtr->twistFrom = currentPtr->twistFrom;
+                // }
 
                 // push node "m" into OPEN
                 openSet.insert(make_pair(neighborPtr -> fScore, neighborPtr));
@@ -450,13 +475,13 @@ void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
                     neighborPtr -> gScore = currentPtr -> gScore + edgeCostSets[i];
                     neighborPtr -> fScore = neighborPtr -> gScore + getHeu(neighborPtr,endPtr);
                     neighborPtr -> cameFrom = currentPtr;
-                    if(currentPtr->cameFrom_Slash!=neighborPtr->cameFrom_Slash){
-                    //若发生转折
-                    neighborPtr->twistFrom = currentPtr;
-                }
-                else{
-                    neighborPtr->twistFrom = currentPtr->twistFrom;
-                }
+                //     if(currentPtr->cameFrom_Slash!=neighborPtr->cameFrom_Slash){
+                //     //若发生转折
+                //     neighborPtr->twistFrom = currentPtr;
+                // }
+                // else{
+                //     neighborPtr->twistFrom = currentPtr->twistFrom;
+                // }
                 
                 }
 
@@ -473,31 +498,32 @@ void AstarPathFinder2d::AstarGraphSearch(Vector2d start_pt, Vector2d end_pt)
             }
         }      
     }
-    //if search fails
     ros::Time time_2 = ros::Time::now();
-    if((time_2 - time_1).toSec() > 0.1)
-        ROS_WARN("Time consume in Astar path finding is %f", (time_2 - time_1).toSec() );
+    ROS_ERROR("Time consume in Astar path finding is %f.", (time_2 - time_1).toSec() );
+    //if search fails
+    ROS_ERROR("[Astar] No Grid need to be searched. Pathfinding process ended prematurely.");
+    return 0;
 }
 
-vector<Vector2d> AstarPathFinder2d::getTwist(){
-    vector<Vector2d> path;
-    vector<GridNodePtr2d> gridPath;
+// vector<Vector2d> AstarPathFinder2d::getTwist(){
+//     vector<Vector2d> path;
+//     vector<GridNodePtr2d> gridPath;
 
-    auto ptr = terminatePtr;
-    while(ptr -> twistFrom != firstPtr){
-        gridPath.push_back(ptr);
-        ptr = ptr->twistFrom;
-        //         thisNode = ptr -> index;
-        // twistTest()
-    }
-    gridPath.push_back(firstPtr);
-    for (auto ptr: gridPath)
-        path.push_back(ptr->coord);
+//     auto ptr = terminatePtr;
+//     while(ptr -> twistFrom != firstPtr){
+//         gridPath.push_back(ptr);
+//         ptr = ptr->twistFrom;
+//         //         thisNode = ptr -> index;
+//         // twistTest()
+//     }
+//     gridPath.push_back(firstPtr);
+//     for (auto ptr: gridPath)
+//         path.push_back(ptr->coord);
         
-    reverse(path.begin(),path.end());
+//     reverse(path.begin(),path.end());
 
-    return path;
-}
+//     return path;
+// }
 
 vector<Vector2d> AstarPathFinder2d::getTwist2(){
     vector<Vector2d> path;
@@ -511,8 +537,10 @@ vector<Vector2d> AstarPathFinder2d::getTwist2(){
     // gridPath.push_back(terminatePtr);    
     auto ptr = terminatePtr;
     auto ptr_ = terminatePtr;
-    
-    while(ptr -> cameFrom != NULL){
+    //放入终止点
+    gridPath.push_back(ptr);
+    ptr = ptr->cameFrom;
+    while(ptr -> cameFrom -> cameFrom != NULL){
         // gridPath.push_back(ptr);
         thisNode = ptr -> index;
         ptr_ = ptr->cameFrom;
@@ -526,6 +554,8 @@ vector<Vector2d> AstarPathFinder2d::getTwist2(){
         last_twist = this_twist;
         ptr = ptr_;
     }
+    // 放入起始点
+    gridPath.push_back(ptr);
     // gridPath.push_back(ptr);
     for (auto ptr: gridPath)
         path.push_back(ptr->coord);
@@ -535,6 +565,51 @@ vector<Vector2d> AstarPathFinder2d::getTwist2(){
     return path;
 }
 
+vector<Vector2d> AstarPathFinder2d::getTwist3(){
+    vector<Vector2d> path;
+    vector<GridNodePtr2d> gridPath;
+    Eigen::Vector2i thisNode;
+    Eigen::Vector2i lastNode;
+    Eigen::Vector2i ori;
+    int this_twist;
+    int last_twist;
+    bool twist_confirm;
+    // gridPath.push_back(terminatePtr);    
+    auto ptr = terminatePtr;
+    auto ptr_ = terminatePtr;
+    //放入终止点
+    gridPath.push_back(ptr);
+    ptr = ptr->cameFrom;
+    int count_length = 1;
+    while(ptr -> cameFrom -> cameFrom != NULL){
+        // gridPath.push_back(ptr);
+        thisNode = ptr -> index;
+        ptr_ = ptr->cameFrom;
+        lastNode = ptr_ -> index;
+        ori = thisNode - lastNode;
+        this_twist = twistTest(ori[0],ori[1]);
+        // if(ptr!=NULL) lastNode = ptr -> index;
+        // else break;
+        twist_confirm = (last_twist != this_twist);
+        if(twist_confirm || count_length == 5) 
+        {
+            gridPath.push_back(ptr);
+            count_length = 0;
+        }
+        count_length++;
+        last_twist = this_twist;
+        ptr = ptr_;
+    }
+    // 放入起始点
+    gridPath.push_back(ptr);
+    // gridPath.push_back(ptr);
+    for (auto ptr: gridPath)
+        path.push_back(ptr->coord);
+        
+    reverse(path.begin(),path.end());
+
+    return path;
+}
 
 //TODO 反向追溯得到路径
 vector<Vector2d> AstarPathFinder2d::getPath() 

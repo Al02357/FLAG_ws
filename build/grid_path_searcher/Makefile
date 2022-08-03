@@ -80,17 +80,6 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -168,6 +157,126 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_py: grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+
+.PHONY : nav_msgs_generate_messages_py
+
+# fast build rule for target.
+nav_msgs_generate_messages_py/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/build
+.PHONY : nav_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_cpp: grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : nav_msgs_generate_messages_cpp
+
+# fast build rule for target.
+nav_msgs_generate_messages_cpp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build
+.PHONY : nav_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_nodejs: grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : nav_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+nav_msgs_generate_messages_nodejs/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
+.PHONY : nav_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_eus: grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/rule
+
+.PHONY : nav_msgs_generate_messages_eus
+
+# fast build rule for target.
+nav_msgs_generate_messages_eus/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_eus.dir/build
+.PHONY : nav_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_eus: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_eus
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_eus/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/build
+.PHONY : actionlib_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_lisp: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_lisp
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_lisp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
+.PHONY : actionlib_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_nodejs: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_nodejs/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/build
+.PHONY : actionlib_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_py: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_py
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_py/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_py.dir/build
+.PHONY : actionlib_msgs_generate_messages_py/fast
+
+# Convenience name for target.
 grid_path_searcher/CMakeFiles/astar_node.dir/rule:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/astar_node.dir/rule
 .PHONY : grid_path_searcher/CMakeFiles/astar_node.dir/rule
@@ -181,6 +290,51 @@ astar_node: grid_path_searcher/CMakeFiles/astar_node.dir/rule
 astar_node/fast:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/astar_node.dir/build.make grid_path_searcher/CMakeFiles/astar_node.dir/build
 .PHONY : astar_node/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/test.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/test.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/test.dir/rule
+
+# Convenience name for target.
+test: grid_path_searcher/CMakeFiles/test.dir/rule
+
+.PHONY : test
+
+# fast build rule for target.
+test/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/test.dir/build.make grid_path_searcher/CMakeFiles/test.dir/build
+.PHONY : test/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_lisp: grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : nav_msgs_generate_messages_lisp
+
+# fast build rule for target.
+nav_msgs_generate_messages_lisp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
+.PHONY : nav_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_cpp: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_cpp
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_cpp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
+.PHONY : actionlib_msgs_generate_messages_cpp/fast
 
 src/Astar_searcher_2d.o: src/Astar_searcher_2d.cpp.o
 
@@ -236,6 +390,33 @@ src/astar_node.cpp.s:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/astar_node.dir/build.make grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.s
 .PHONY : src/astar_node.cpp.s
 
+src/test.o: src/test.cpp.o
+
+.PHONY : src/test.o
+
+# target to build an object file
+src/test.cpp.o:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/test.dir/build.make grid_path_searcher/CMakeFiles/test.dir/src/test.cpp.o
+.PHONY : src/test.cpp.o
+
+src/test.i: src/test.cpp.i
+
+.PHONY : src/test.i
+
+# target to preprocess a source file
+src/test.cpp.i:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/test.dir/build.make grid_path_searcher/CMakeFiles/test.dir/src/test.cpp.i
+.PHONY : src/test.cpp.i
+
+src/test.s: src/test.cpp.s
+
+.PHONY : src/test.s
+
+# target to generate assembly for a file
+src/test.cpp.s:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/test.dir/build.make grid_path_searcher/CMakeFiles/test.dir/src/test.cpp.s
+.PHONY : src/test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -244,11 +425,21 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... test"
+	@echo "... nav_msgs_generate_messages_py"
+	@echo "... nav_msgs_generate_messages_cpp"
+	@echo "... nav_msgs_generate_messages_nodejs"
 	@echo "... list_install_components"
+	@echo "... nav_msgs_generate_messages_eus"
+	@echo "... actionlib_msgs_generate_messages_eus"
+	@echo "... actionlib_msgs_generate_messages_lisp"
+	@echo "... actionlib_msgs_generate_messages_nodejs"
+	@echo "... actionlib_msgs_generate_messages_py"
 	@echo "... astar_node"
+	@echo "... test"
+	@echo "... nav_msgs_generate_messages_lisp"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... install"
 	@echo "... src/Astar_searcher_2d.o"
 	@echo "... src/Astar_searcher_2d.i"
@@ -256,6 +447,9 @@ help:
 	@echo "... src/astar_node.o"
 	@echo "... src/astar_node.i"
 	@echo "... src/astar_node.s"
+	@echo "... src/test.o"
+	@echo "... src/test.i"
+	@echo "... src/test.s"
 .PHONY : help
 
 

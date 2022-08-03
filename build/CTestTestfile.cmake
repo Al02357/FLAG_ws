@@ -5,9 +5,12 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("gtest")
+subdirs("bspline_race")
 subdirs("circle_recognition")
+subdirs("mapping")
+subdirs("my_fsm")
 subdirs("plan_env")
-subdirs("fiesta")
+subdirs("remap_node")
 subdirs("grid_path_searcher")
 subdirs("apriltag_ros")
 subdirs("fsm")

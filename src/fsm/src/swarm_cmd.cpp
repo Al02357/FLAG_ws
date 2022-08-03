@@ -139,6 +139,7 @@ void PrintInfo(){
     std::cout << " 4 for Land"<< std::endl;
     std::cout << " 5 for Disarm"<< std::endl;
     std::cout << " 6 for Waypoints"<< std::endl;
+    std::cout << " 7 for ASCUP debug"<< std::endl;
     std::cout << " 9 for Static"<< std::endl;
     std::cout << "10 for Low speed in aim +x"<< std::endl;                
     std::cout << "20 for Low speed in aim -x"<< std::endl;
@@ -242,7 +243,7 @@ int main(int argc, char **argv){
 //    nh.param("/swarm_cmd/aim_pose_position_z",aim.pose.position.z,1.0);
     aim.pose.position.y = 0;
     aim.pose.position.x = 0;
-    aim.pose.position.z = 0.5;
+    aim.pose.position.z = 0.3;
 
     aim.pose.orientation.x = 0;
 

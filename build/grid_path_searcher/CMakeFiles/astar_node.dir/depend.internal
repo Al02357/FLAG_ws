@@ -363,6 +363,7 @@ grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.o
  /home/flag/FLAG_ws/src/grid_path_searcher/src/astar_node.cpp
  /opt/ros/melodic/include/geometry_msgs/Point.h
  /opt/ros/melodic/include/geometry_msgs/Point32.h
+ /opt/ros/melodic/include/geometry_msgs/PointStamped.h
  /opt/ros/melodic/include/geometry_msgs/Pose.h
  /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
  /opt/ros/melodic/include/geometry_msgs/PoseWithCovariance.h

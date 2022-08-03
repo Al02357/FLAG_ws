@@ -10,9 +10,9 @@
 
   <node pkg="grid_path_searcher" type="astar_node" name="astar_node" output="screen" required = "true">
      <!-- FIXME 修改remap -->
-      <remap from="~waypoints"       to="/waypoint_generator/waypoints"/>
-      <remap from="~map"                   to="/fiesta/ESDFMap/occ_pc"/> 
-      <remap from="~pose"                   to="/mavros/local_position/pose"/> 
+      <remap from="~waypoints"       to="/move_base_simple/goal"/>
+      <remap from="~map"                   to="/grid_map/occupancy"/> 
+      <remap from="~pose"                   to="/mavros/local_position/pose_"/> 
 
       <param name="map/resolution"   value="0.2" />
       <param name="map/x_size"       value="$(arg map_size_x)"/>
@@ -23,4 +23,5 @@
       <param name="planning/start_y" value="$(arg start_y)"/>
       <!-- <param name="planning/start_z" value="$(arg start_z)"/> -->
   </node>
+
 </launch>

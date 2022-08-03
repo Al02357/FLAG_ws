@@ -15,6 +15,7 @@
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/Path.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PointStamped.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <visualization_msgs/Marker.h>
 
@@ -36,7 +37,9 @@ double _resolution, _inv_resolution, _cloud_margin;
 double _x_size, _y_size;    
 
 bool _has_map   = false;
+bool _has_target   = false;
 Vector2d _start_pt;
+Vector2d _target_pt;
 double actual_height = 0.0;
 // Map size
 Vector2d _map_lower, _map_upper;
@@ -51,11 +54,11 @@ ros::Publisher  _grid_path_vis_pub,
                                _grid_twist_pub;
 // Callback
 void rcvWaypointsCallback(const nav_msgs::Path & wp);
-void rcvPointCloudCallBack(const sensor_msgs::PointCloud::ConstPtr & pointcloud_map_raw);
+void rcvPointCloudCallBack(const sensor_msgs::PointCloud2::ConstPtr & pointcloud_map_raw);
 void simPoseCallback(const geometry_msgs::PoseStamped & msg);
 /*----------------------A*----------------------*/
 AstarPathFinder2d * _astar_path_finder     = new AstarPathFinder2d();
-void pathFinding(const Vector2d start_pt, const Vector2d target_pt);
+bool pathFinding(const Vector2d start_pt, const Vector2d target_pt);
 /*----------------------visual----------------------*/
 void visGridPath( vector<Vector2d> nodes, bool is_use_jps );                                            //可视化函数
 void visVisitedNode( vector<Vector2d> nodes );           
@@ -64,16 +67,16 @@ void pubGridPath(vector<Vector2d> nodes);
 void pubGridTwist(vector<Vector2d> nodes);
 
 /*----------------------function----------------------*/
-void rcvPointCloudCallBack(const sensor_msgs::PointCloud::ConstPtr & pointcloud_map_raw)
+void rcvPointCloudCallBack(const sensor_msgs::PointCloud2::ConstPtr & pointcloud_map_raw)
 {   
-    // ROS_WARN("?");
-    // cout<<"START. . ";
-    sensor_msgs::PointCloud2 pointcloud_map;
-    convertPointCloudToPointCloud2(*pointcloud_map_raw, pointcloud_map);
-    // if(_has_map){
-    //     //QUES 是否需要zhiling？
-    //     _astar_path_finder->cleanObs();
-    // }
+
+    sensor_msgs::PointCloud2 pointcloud_map = *pointcloud_map_raw;
+    // convertPointCloudToPointCloud2(*pointcloud_map_raw, pointcloud_map);
+    if(_has_map){
+        //QUES 是否需要zhiling？
+        _astar_path_finder->cleanObs();
+         cout<<"Has map, clean all."<<endl;
+    }
      
     pcl::PointCloud<pcl::PointXYZ> cloud;           //容器填充为三维点
     pcl::PointCloud<pcl::PointXYZ> cloud_vis;
@@ -91,11 +94,8 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud::ConstPtr & pointcloud_
         // if(高度不在范围内) continue;
         pt = cloud.points[idx];        //取点到pt
         //FIXME 修改0.5为目标高度范围
-        if(std::abs(pt.z-actual_height)>_resolution/2) continue;
-        // cout<<idx<<"::::"<<pt.z<<"::::"<<endl;
+        if(std::abs(pt.z-0.3)>_resolution) continue;
          _astar_path_finder->setObs(pt.x, pt.y);
-        //  cout<<"ptx::::"<<pt.x<<"    pty::::"<<pt.y<<endl;
-// cout<<". ";
         // for visualize only
         // 可视化
         Vector2d cor_round = _astar_path_finder->coordRounding(Vector2d(pt.x, pt.y));
@@ -103,6 +103,24 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud::ConstPtr & pointcloud_
         pt.y = cor_round(1);
         pt.z = 0;
         cloud_vis.points.push_back(pt);
+        auto pt_ = pt;
+        Vector2i center_index = _astar_path_finder -> coord2gridIndex(Vector2d(pt.x, pt.y));
+        Vector2d pt_around_d;
+        Vector2i  pt_around_i;
+        for(int row_index = -1;row_index<=1;row_index++){
+            for(int col_index = -1;col_index<=1;col_index++){
+                if(row_index == 0 && col_index == 0) continue;
+                pt_around_i = center_index + Vector2i(row_index,col_index);
+                pt_around_d = _astar_path_finder -> gridIndex2coord(pt_around_i);
+                if(_astar_path_finder -> getData(pt_around_i)) {
+                    pt.x = pt_around_d(0);
+                    pt.y = pt_around_d(1);
+                    cloud_vis.points.push_back(pt);
+                }
+            }
+        }
+        
+        
         // 可视化end
     }
      
@@ -112,28 +130,45 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud::ConstPtr & pointcloud_
     cloud_vis.is_dense = true;
 
     pcl::toROSMsg(cloud_vis, map_vis);  //将处理好的可视化数据发布到ROS话题中
- cout<<"pointcloud pub."<<endl;
     map_vis.header.frame_id = "t265_odom_frame";
     _grid_map_vis_pub.publish(map_vis);//demo_node/grid_map_vis
     // 可视化end
 
     _has_map = true;
-    cout<<"pointcloud received."<<endl;
+    cout<<"[Astar] Pointcloud received."<<endl;
+
+    if(!_has_target)
+    {
+        ROS_WARN("[Astar] No target!");
+    }else  {
+        if(_astar_path_finder -> getData(_target_pt)) ROS_ERROR("[Astar] _target_pt is Occupied! PathFinding will not run!");
+        else {
+        if(_astar_path_finder->getData(_start_pt)) 
+        {
+            ROS_WARN("[Astar] _start_pt is Occupied! Reset Obs. BE CAREFUL!");
+            _astar_path_finder -> cleanStartObs(_start_pt);
+        }
+        if(!pathFinding(_start_pt, _target_pt)) ROS_ERROR("[Astar] No path provide!"); 
+        }
+    }
 }
 
-void rcvWaypointsCallback(const nav_msgs::Path & wp)
+void rcvWaypointsCallback(const geometry_msgs::PoseStamped::ConstPtr & wp)
 {     
     //USAGE 拿到waypoint消息后，检查并进行路径寻找
     //起点为全局变量_start_pt，终点为消息中的waypoint
-    if( _has_map == false ) //无地图或点位于地下，退出函数
-        return;
-
-    Vector2d target_pt;
-    target_pt << wp.poses[0].pose.position.x,
-                              wp.poses[0].pose.position.y;
-
-    ROS_INFO("[node] receive the planning target");
-    pathFinding(_start_pt, target_pt); 
+    if( _has_map == false ) //无地图，退出函数
+    {
+        ROS_WARN("[Astar] No map! ");
+        // return;
+    }
+    cout<<"[Astar] Planning target received."<<endl;
+    // Vector2d _target_pt;
+    _target_pt << wp->pose.position.x,
+                              wp->pose.position.y;
+    _has_target = true;
+    // ROS_INFO("[node] receive the planning target");
+    // pathFinding(_start_pt, target_pt); 
 }
 
 void simPoseCallback(const geometry_msgs::PoseStamped & msg)
@@ -144,14 +179,16 @@ void simPoseCallback(const geometry_msgs::PoseStamped & msg)
     // ROS_WARN("GET POSE");
 }
 
-void pathFinding(const Vector2d start_pt, const Vector2d target_pt)
+bool pathFinding(const Vector2d start_pt, const Vector2d target_pt)
 {
     //Call A* to search for a path
-    _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
+    cout<<"[Astar] PathFinding start."<<endl;
+    if(!_astar_path_finder->AstarGraphSearch(start_pt, target_pt)) return 0;
 
     //Retrieve the path
+
     auto grid_path     = _astar_path_finder->getPath();
-    auto grid_twist    = _astar_path_finder->getTwist2();
+    auto grid_twist    = _astar_path_finder->getTwist3();
     auto visited_nodes = _astar_path_finder->getVisitedNodes();
 
     //Visualize the result
@@ -162,6 +199,7 @@ void pathFinding(const Vector2d start_pt, const Vector2d target_pt)
 
     //Reset map for next call
     _astar_path_finder->resetUsedGrids();
+    return 1;
 }
 /*----------------------main----------------------*/
 int main(int argc, char** argv)
@@ -171,7 +209,7 @@ int main(int argc, char** argv)
     ros::NodeHandle nh("~");
 
 //sub
-    _map_sub  = nh.subscribe( "map",       10, rcvPointCloudCallBack );
+    _map_sub  = nh.subscribe( "map",  10, rcvPointCloudCallBack );
     _pts_sub     = nh.subscribe( "waypoints", 10, rcvWaypointsCallback );   
     _nav_sub    = nh.subscribe( "pose", 10, simPoseCallback );
 //pub
@@ -198,7 +236,7 @@ int main(int argc, char** argv)
     _astar_path_finder  -> initGridMap(_resolution, _map_lower, _map_upper, _max_x_id, _max_y_id);
     
 //ROS
-    ros::Rate rate(100);
+    ros::Rate rate(1);
     while(ros::ok()) 
     {
         // ROS_INFO("test");
@@ -216,6 +254,7 @@ void pubGridPath(vector<Vector2d> nodes){
     for(int i = 0; i < int(nodes.size()); i++)
     {
         Vector2d coord = nodes[i];
+        pt.header.seq = i+1;
         pt.pose.position.x = coord(0);
         pt.pose.position.y = coord(1);
         pt.pose.position.z =  0;
@@ -233,6 +272,7 @@ void pubGridTwist(vector<Vector2d> nodes){
     for(int i = 0; i < int(nodes.size()); i++)
     {
         Vector2d coord = nodes[i];
+        pt.header.seq = i+1;
         pt.pose.position.x = coord(0);
         pt.pose.position.y = coord(1);
         pt.pose.position.z =  0;

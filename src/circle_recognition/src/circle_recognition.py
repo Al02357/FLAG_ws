@@ -39,7 +39,7 @@ def callback(data):
     count = count + 1
     if count == 1:
         count = 0
-        img = bridge.imgmsg_to_cv2(data, "bgr8")
+        img = bridge.imgmsg_to_cv2(data, "8UC1")
         timestr = "%.6f" % data.header.stamp.to_sec()
         # %.6f表示小数点后带有6位，可根据精确度需要修改；
         image_name = timestr + ".jpg"  # 图像命名：时间戳.jpg
@@ -164,7 +164,7 @@ def displayWebcam():
     global count, bridge
     count = 0
     bridge = CvBridge()
-    rospy.Subscriber('/camera/infra1/image_rect_raw', Image, callback)
+    rospy.Subscriber('/D435i/infra1/image_raw', Image, callback)
     rospy.spin()
 
 

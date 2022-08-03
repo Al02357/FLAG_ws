@@ -1,0 +1,8 @@
+prefix=/home/flag/FLAG_ws/install
+
+Name: my_fsm
+Description: Description of my_fsm
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

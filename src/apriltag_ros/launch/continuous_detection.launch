@@ -2,7 +2,7 @@
 <launch>
   <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
   <arg name="node_namespace" default="apriltag_ros_continuous_node" />
-  <arg name="camera_name" default="/camera/color" />
+  <arg name="camera_name" default="/D435i/color" />
   <arg name="image_topic" default="image_raw" />
   <arg name="camera_frame" default="map" /> 
 

@@ -317,7 +317,10 @@ DL_INCLUDE_DIRS:PATH=/usr/include
 DL_LIBRARIES:FILEPATH=/usr/lib/x86_64-linux-gnu/libdl.so
 
 //Path to a program.
-DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
+DOXYGEN_EXECUTABLE:FILEPATH=/usr/bin/doxygen
+
+//Doxygen found
+DOXYGEN_FOUND:BOOL=TRUE
 
 //DepthSense SDK directory
 DSSDK_DIR:PATH=DSSDK_DIR-NOTFOUND
@@ -1033,6 +1036,12 @@ bondcpp_DIR:PATH=/opt/ros/melodic/share/bondcpp/cmake
 //Value Computed by CMake
 bspline_race_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/bspline_race
 
+//The directory containing a CMake configuration file for bspline_race.
+bspline_race_DIR:PATH=/home/flag/FLAG_ws/devel/share/bspline_race/cmake
+
+//Dependencies for target
+bspline_race_LIB_DEPENDS:STATIC=
+
 //Value Computed by CMake
 bspline_race_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/bspline_race
 
@@ -1071,12 +1080,6 @@ diagnostic_updater_DIR:PATH=/opt/ros/melodic/share/diagnostic_updater/cmake
 
 //The directory containing a CMake configuration file for dynamic_reconfigure.
 dynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/dynamic_reconfigure/cmake
-
-//Value Computed by CMake
-fiesta_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/fiesta
-
-//Value Computed by CMake
-fiesta_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/fiesta
 
 //Value Computed by CMake
 fsm_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/fsm
@@ -1205,6 +1208,12 @@ jsoncpp_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/jsoncpp
 //Path to a library.
 lib:FILEPATH=/opt/ros/melodic/lib/libcamera_calibration_parsers.so
 
+//Value Computed by CMake
+mapping_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/mapping
+
+//Value Computed by CMake
+mapping_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/mapping
+
 //The directory containing a CMake configuration file for message_filters.
 message_filters_DIR:PATH=/opt/ros/melodic/share/message_filters/cmake
 
@@ -1214,11 +1223,17 @@ message_generation_DIR:PATH=/opt/ros/melodic/share/message_generation/cmake
 //The directory containing a CMake configuration file for message_runtime.
 message_runtime_DIR:PATH=/opt/ros/melodic/share/message_runtime/cmake
 
+//Value Computed by CMake
+my_fsm_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/my_fsm
+
+//Value Computed by CMake
+my_fsm_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/my_fsm
+
 //The directory containing a CMake configuration file for nav_msgs.
 nav_msgs_DIR:PATH=/opt/ros/melodic/share/nav_msgs/cmake
 
 //The directory containing a CMake configuration file for nlopt.
-nlopt_DIR:PATH=nlopt_DIR-NOTFOUND
+nlopt_DIR:PATH=/opt/ros/melodic/share/nlopt/cmake
 
 //The directory containing a CMake configuration file for nodelet.
 nodelet_DIR:PATH=/opt/ros/melodic/share/nodelet/cmake
@@ -1246,6 +1261,12 @@ realsense_ros_gazebo_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/realsense_ros_ga
 
 //Value Computed by CMake
 realsense_ros_gazebo_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/realsense_ros_gazebo
+
+//Value Computed by CMake
+remap_node_BINARY_DIR:STATIC=/home/flag/FLAG_ws/build/remap_node
+
+//Value Computed by CMake
+remap_node_SOURCE_DIR:STATIC=/home/flag/FLAG_ws/src/remap_node
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
@@ -1656,7 +1677,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=11
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=14
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

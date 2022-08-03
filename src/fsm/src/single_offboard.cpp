@@ -23,8 +23,9 @@
 #include <stdlib.h>
 #include <thread>
 #include <eigen3/Eigen/Dense>
-
+#include <std_msgs/Float64MultiArray.h>
 #include <fsm/command_acc.h>
+#include <bspline_race/bspline_race.h>
 using namespace std;
 
 static mavros_msgs::State current_state;
@@ -38,12 +39,127 @@ static int ready_fly=0;
 static float voltage_now;
 static double waypoint[50][3];
 static geometry_msgs::PoseStamped aim;
+static geometry_msgs::PoseStamped goal;
 Eigen::Vector3d pos_drone_fcu;
-//pos_drone_fcu = Eigen::Vector3d(0.0,0.0,0.0);
+Eigen::Vector3d pos_drone_now;
+Eigen::Vector2d yaw_drone_fcu;
+
+
+/*----------ASCUP----------*/
+static int flag_A = 0;                              // 0: disable mission A debug       1: enable mission A debug
+static int flag_B = 0;                              // 0: disable mission B debug       1: enable mission B debug
+static int flag_C = 0;                              // 0: disable mission C debug       1: enable mission C debug
+static int flag_D = 0;                              // 0: disable mission D debug       1: enable mission D debug
+static int flag_E = 0;                              // 0: disable mission E debug       1: enable mission E debug
+static int flag_LAND = 1;                           // 0: disable mission land debug    1: enable mission land debug  
+
+int flag_a = 0;                           /* 0: start state
+                                             1: arrive point 1 (find bounding box)
+                                             2: arrive point 2 (bounding box right midpoint) 
+                                             3: arrive point 3 (bounding box left midpoint)  
+                                             4: arrive point 4 (transition before mission B)     */
+int count_box = 0;
+Eigen::Vector3d box_midpoint;
+double box_width;
+
+int flag_land = 0;                           /* 0: start state: determine wait coordinate
+                                               1: wait recognition 
+                                               2: determine tag coordinate
+                                               3: fly towards tag         
+                                               4: land                     */ 
+int flag_tag_recog = 0;
+int count_tag = 0;
+Eigen::Vector3d pos_tag;
+Eigen::Vector3d pos_land;                
+
+static int flag_ring1 = 2;
+static int flag_ring2 = 0;
+static int flag_ring3 = 0;
+static int flag_ring4 = 0;
+
+int flag_ring_recog = 0;
+int count_ring1 = 0;
+Eigen::Vector3d ring_center;                                //center point from ring recognition
+Eigen::Vector3d ring_direct;                                //normal vector from ring recognition
+Eigen::Vector3d ring_before;                                //point before going through ring      
+Eigen::Vector3d ring_after;                                 //point after going through ring    
+Eigen::Vector2d ring_orientation;                           //yaw orientation to go through ring
+
+bspline_race::BsplineTraj traj_fsm;
+// geometry_msgs::PoseStamped[] traj_pos;
+// geometry_msgs::PoseStamped[] traj_vel;
+// geometry_msgs::PoseStamped[] traj_acc;
+int traj_len;
+int traj_p = 0;
+int flag_new_traj = 1;
+
+/*-------------------------*/
+
+/*----------ASCUP----------*/
+void box_cb(const std_msgs::Float64MultiArray::ConstPtr& msg)
+{
+    if(count_box < 10)
+    {
+        box_midpoint = Eigen::Vector3d(msg->data[0], msg->data[1], 0.6);
+        box_width = msg->data[3];
+        
+        /*----------check bounding box width: error < 0.3 as correct----------*/
+        if(abs(box_width - 2.5) < 0.3) {count_box = count_box + 1;} 
+    }
+}
+
+void ring_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
+{
+    ring_center = Eigen::Vector3d(msg->pose.position.x, msg->pose.position.y, msg->pose.position.z);
+    ring_direct = Eigen::Vector3d(msg->pose.orientation.z, -msg->pose.orientation.x, -msg->pose.orientation.y);
+    flag_ring_recog = 1;
+}
+
+void tag_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
+{
+    pos_tag = Eigen::Vector3d(msg->pose.position.z, -msg->pose.position.x, -msg->pose.position.y);
+    flag_tag_recog = 1;
+}
+
+void traj_cb(const bspline_race::BsplineTraj::ConstPtr& msg)
+{
+    if(flag_new_traj == 1) 
+    {
+        traj_fsm.position = msg->position;
+        //traj_fsm.position = msg->velocity;
+        //traj_acc = msg->acceleration;
+        traj_len = msg->position.size();
+        traj_p = traj_len - 1;                                                //???
+    }
+
+    flag_new_traj = 0;
+}
+
+/*-------------------------*/
+
+
 
 void vtg_cb(const sensor_msgs::BatteryState::ConstPtr &msg)
 {
     voltage_now = msg->voltage;
+}
+
+void ready_cb(const fsm::command_acc &msg)
+{ 
+    ready_fly=msg.ready;
+    //ROS_ERROR("11111111");voltage_now
+    //cout<<"1111";
+}
+
+void state_cb(const mavros_msgs::State::ConstPtr& msg)
+{
+    current_state = *msg;
+}
+
+void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
+{
+    pos_drone_fcu = Eigen::Vector3d(msg->pose.position.x, msg->pose.position.y, msg->pose.position.z);
+    yaw_drone_fcu = Eigen::Vector2d(msg->pose.orientation.x, msg->pose.orientation.w);
 }
 
 void UdpListen(const uint16_t cport)
@@ -143,22 +259,7 @@ void UdpListen(const uint16_t cport)
 
 }
 
-void ready_cb(const fsm::command_acc &msg)
-{ 
-    ready_fly=msg.ready;
-    //ROS_ERROR("11111111");voltage_now
-    //cout<<"1111";
-}
 
-void state_cb(const mavros_msgs::State::ConstPtr& msg)
-{
-    current_state = *msg;
-}
-
-void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
-{
-    pos_drone_fcu  = Eigen::Vector3d(msg->pose.position.x,msg->pose.position.y,msg->pose.position.z);
-}
 
 int main(int argc, char **argv)
 {
@@ -172,6 +273,22 @@ int main(int argc, char **argv)
     ros::Subscriber ready= nh.subscribe("/px4/ready",10,ready_cb);
     ros::Subscriber voltage_sub = nh.subscribe<sensor_msgs::BatteryState>
             ("/mavros/battery", 300, vtg_cb);
+
+    /*----------AISHENG CUP----------*/
+    ros::Subscriber box_sub = nh.subscribe<std_msgs::Float64MultiArray>
+            ("/task_A_msgs", 100, box_cb);
+    ros::Subscriber ring_sub = nh.subscribe<geometry_msgs::PoseStamped>
+            ("/orb_pose", 100, ring_cb);
+    ros::Subscriber tag_sub = nh.subscribe<geometry_msgs::PoseStamped>
+            ("/apriltag_ros_continuous_node/apriltag_pose", 100, tag_cb);
+    ros::Subscriber traj_sub = nh.subscribe<bspline_race::BsplineTraj>
+            ("/bspline_traj", 10 ,traj_cb);
+
+    ros::Publisher traj_goal_pub = nh.advertise<geometry_msgs::PoseStamped>
+            ("/move_base_simple/goal", 100);
+    
+    /*-------------------------------*/
+
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>  
             ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>   
@@ -186,7 +303,7 @@ int main(int argc, char **argv)
     nh.param("/single_offboard/way_num",waypoint_num,0);
     aim.pose.position.x = 0;
     aim.pose.position.y = 0;
-    aim.pose.position.z = 0.5;
+    aim.pose.position.z = 1.2;
     //point
     for (int i = 1; i <= waypoint_num; i++)
     {
@@ -218,27 +335,33 @@ int main(int argc, char **argv)
     disarm_cmd.request.value = false;
 
     ros::Time last_request = ros::Time::now();
-    for(int i = 100; ros::ok() && i > 0; --i){
+    for(int i = 100; ros::ok() && i > 0; --i)
+    {
         local_pos_pub.publish(aim);
         ros::spinOnce();
         rate.sleep();
     }
 
-    while(ros::ok()){
+
+
+
+    while(ros::ok())
+    {
         //waypoint
         if(cmdd==6)
         {   
 //          if(fabs(pos_drone_fcu[0] - waypoint[j][0]) < (0.05) && fabs(pos_drone_fcu[1] - waypoint[j][1]) < (0.05) && fabs(pos_drone_fcu[2] - waypoint[j][2]) < (0.05))
           
-if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint[j][1],2)+pow(pos_drone_fcu[2] - waypoint[j][2],2))<(0.1) && j<waypoint_num)
+        if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint[j][1],2)+pow(pos_drone_fcu[2] - waypoint[j][2],2))<(0.1) && j<waypoint_num)
           j=j+1;
           aim.pose.position.x = waypoint[j][0];
           aim.pose.position.y = waypoint[j][1];
           aim.pose.position.z = waypoint[j][2];
         }
         //fsm
-        if(cmdd!=4)local_pos_pub.publish(aim);
-        if(cmdd==1){
+//        if(cmdd!=4) local_pos_pub.publish(aim);
+        if(cmdd==1)
+        {
             if( current_state.mode != "OFFBOARD" &&
                 (ros::Time::now() - last_request > ros::Duration(5.0))){
                 if( set_mode_client.call(offb_set_mode) &&
@@ -248,7 +371,8 @@ if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint
                 last_request = ros::Time::now();
             }
         }
-        if(cmdd==2){
+        if(cmdd==2)
+        {
             if( current_state.mode != "OFFBOARD" &&
                 (ros::Time::now() - last_request > ros::Duration(5.0))){
                 if( set_mode_client.call(offb_set_mode) &&
@@ -264,6 +388,7 @@ if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint
                 }
                 last_request = ros::Time::now();
             }
+            local_pos_pub.publish(aim);
         }
         
         if(cmdd==9)
@@ -290,44 +415,40 @@ if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint
             }
                   ROS_ERROR("Vehicle armed");
         }
-        if(cmdd==4)
+        
+        if(cmdd == 4)
         {   
-        if(abs(pos_drone_fcu[2] - 0.1) < (0.05))
-      { 
-        flag1=1;
-      }
-        if(flag1==0)
-      {
-          aim.pose.position.x = pos_drone_fcu[0];
-          aim.pose.position.y = pos_drone_fcu[1];      
-          aim.pose.position.z = 0.1;
-          local_pos_pub.publish(aim);
-      }
-        else
-      {
-        if(current_state.mode == "OFFBOARD")
+            if(abs(pos_drone_fcu[2] - 0.1) < 0.05) {flag1 = 1;}
+            if(flag1 == 0)
             {
-                mode_cmd.request.custom_mode = "Hold";
-                set_mode_client.call(mode_cmd);
-                ROS_ERROR("1111");
+                aim.pose.position.x = pos_drone_fcu[0];
+                aim.pose.position.y = pos_drone_fcu[1];      
+                aim.pose.position.z = 0.1;
+                local_pos_pub.publish(aim);
             }
-
-            if(current_state.armed)
+            else
             {
-                arm_cmd.request.value = false;
-                arming_client.call(arm_cmd);
-                ROS_ERROR("2222");
+                if(current_state.mode == "OFFBOARD")
+                {
+                    mode_cmd.request.custom_mode = "Hold";
+                    set_mode_client.call(mode_cmd);
+                    ROS_ERROR("1111");
+                }
+                if(current_state.armed)
+                {
+                    arm_cmd.request.value = false;
+                    arming_client.call(arm_cmd);
+                    ROS_ERROR("2222");
+                }
+                if (arm_cmd.response.success)
+                {
+                    ROS_ERROR("Disarm successfully!");
+                }
             }
-
-            if (arm_cmd.response.success)
-            {
-                ROS_ERROR("Disarm successfully!");
-            }
-      }
         }
 
         if(cmdd==5)
-    {
+        {
             if(current_state.mode == "OFFBOARD")
             {
                 mode_cmd.request.custom_mode = "MANUAL";
@@ -344,11 +465,326 @@ if(sqrt(pow(pos_drone_fcu[0] - waypoint[j][0],2)+pow(pos_drone_fcu[1] - waypoint
             {
                 ROS_ERROR("Disarm successfully!");
             }
-    }
-    cout<<current_state.mode<<endl;
+        }
+
+        /*----------ASCUP----------*/
+        if(cmdd == 7)
+        {
+            /*----------mission A----------*/
+            if(flag_A == 1)
+            {
+                /*----------point 1: search for bounding box----------*/
+                if(flag_a == 0)
+                {
+                    /*----------avoid recognition noise: 10 correct recognition as successful----------*/
+                    if(count_box < 10)
+                    {                        
+                        /*----------fly towards right slowly (maximum y = -4.5) before successful recognition */
+                        if(pos_drone_fcu[1] > -4.5)
+                        {
+                            aim.pose.position.x = 0.0;
+                            aim.pose.position.y = pos_drone_fcu[1] - 0.02;      
+                            aim.pose.position.z = 0.6;
+                            local_pos_pub.publish(aim);
+                        }
+                        else
+                        {
+                            aim.pose.position.x = 0.0;
+                            aim.pose.position.y = -4.5;      
+                            aim.pose.position.z = 0.6;
+                            local_pos_pub.publish(aim);
+                        }
+                    }
+                    else
+                    {
+                        flag_a = 1;
+                    }  
+                }
+                
+                /*----------point 2: bounding box right midpoint----------*/
+                if(flag_a == 1)
+                {
+                    /*----------check position arrival: box right midpoint----------*/
+                    if( (abs(pos_drone_fcu[0] - box_midpoint[0]) < 0.1) && (abs(pos_drone_fcu[1] - box_midpoint[1]) < 0.1) )
+                    {
+                        /*----------check yaw arrival: 90 deg----------*/
+                        if( (abs(yaw_drone_fcu[0] - 0.707) < 0.004) && (abs(yaw_drone_fcu[1] - 0.707) < 0.004) )
+                        {
+                            flag_a = 2;
+                        }
+                        /*----------adjust yaw----------*/
+                        else
+                        {
+                            aim.pose.position.x = box_midpoint[0];
+                            aim.pose.position.y = box_midpoint[1];      
+                            aim.pose.position.z = box_midpoint[2];
+                            aim.pose.orientation.x = 0.7071;
+                            aim.pose.orientation.y = 0.0;
+                            aim.pose.orientation.z = 0.0;
+                            aim.pose.orientation.x = 0.7071;
+                            local_pos_pub.publish(aim);
+                        }
+                    }
+                    /*----------fly towards box right midpoint through planning----------*/
+                    else
+                    {
+                        //_____planning function()    start point: pos_drone_fcu[0], pos_drone_fcu[1], 0.6    end point: right midpoint of bounding box
+                    }
+
+                }
+
+                /*----------point 3: go through wall----------*/
+                if(flag_a == 2)
+                {
+                    /*----------check position arrival: box left midpoint----------*/
+                    if( (abs(pos_drone_fcu[0] - box_midpoint[0]) < 0.1) && (abs( pos_drone_fcu[1] - (box_midpoint[1] + 7.0) ) < 0.1) )
+                    {
+                        /*----------check yaw arrival: 0 deg----------*/
+                        if( (abs(yaw_drone_fcu[0] - 1.0) < 0.001) && (abs(yaw_drone_fcu[1] - 0.0) < 0.005) )      
+                        {
+                            flag_a = 3;
+                        }
+                        /*----------adjust yaw----------*/
+                        else
+                        {
+                            aim.pose.position.x = box_midpoint[0];
+                            aim.pose.position.y = box_midpoint[1] + 7.0;      
+                            aim.pose.position.z = box_midpoint[2];
+                            aim.pose.orientation.x = 1.0;
+                            aim.pose.orientation.y = 0.0;
+                            aim.pose.orientation.z = 0.0;
+                            aim.pose.orientation.x = 0.0;
+                            local_pos_pub.publish(aim);
+                        }
+                    }
+                    /*----------fly towards box right midpoint through planning----------*/
+                    else
+                    {
+                        //_____planning function()    start point: right midpoint of bounding box    end point: right midpoint of bounding box with y + 7.0
+                    }
+                }
+
+                /*----------point 4: transition to mission B----------*/
+                if(flag_a == 3)
+                {
+                    aim.pose.position.x = box_midpoint[0];
+                    aim.pose.position.y = box_midpoint[1] +7.0;      
+                    aim.pose.position.z = 0.1;
+                    local_pos_pub.publish(aim);
+                }
+            }
+
+            
+            
+            /*----------mission D----------*/
+            if(flag_D == 1)
+            {    
+                if(flag_ring1 == 0)
+                {
+                    /*----------check ring detection----------*/
+                    if(count_ring1 < 10)
+                    {
+                        if(flag_ring_recog == 1)
+                        {
+                            count_ring1 = count_ring1 + 1;
+                            flag_ring_recog = 0;
+                        }
+                        aim.pose.position.x = pos_drone_fcu[0];
+                        aim.pose.position.y = pos_drone_fcu[1];      
+                        aim.pose.position.z = pos_drone_fcu[2];
+                        local_pos_pub.publish(aim);
+                    }
+                    /*----------determine point before and after ring----------*/
+                    else if(count_ring1 == 10)
+                    {
+                        count_ring1 = count_ring1 + 1;
+
+                        ring_before = Eigen::Vector3d(pos_drone_fcu[0] + ring_center[0] - ring_direct[0]*1.0, 
+                                                    pos_drone_fcu[1] + ring_center[1] - ring_direct[1]*1.0, 
+                                                    pos_drone_fcu[2] + ring_center[2]);
+                        ring_after = Eigen::Vector3d(pos_drone_fcu[0] + ring_center[0] + ring_direct[0]*1.0, 
+                                                    pos_drone_fcu[1] + ring_center[1] + ring_direct[1]*1.0, 
+                                                    pos_drone_fcu[2] + ring_center[2]);                         
+                        aim.pose.position.x = ring_before[0];
+                        aim.pose.position.y = ring_before[1];      
+                        aim.pose.position.z = ring_before[2];
+                        local_pos_pub.publish(aim);
+                    }
+                    /*----------fly towards point before ring----------*/
+                    else if(count_ring1 == 11)
+                    {
+                        aim.pose.position.x = ring_before[0];
+                        aim.pose.position.y = ring_before[1];      
+                        aim.pose.position.z = ring_before[2];
+                        local_pos_pub.publish(aim);
+
+                        if( (abs(pos_drone_fcu[0] - ring_before[0]) < 0.1) && (abs(pos_drone_fcu[1] - ring_before[1]) < 0.1) && (abs(pos_drone_fcu[2] - ring_before[2]) < 0.1) )
+                        {
+                            count_ring1 = count_ring1 + 1;
+                        }
+                    }
+                    /*----------fly towards point after ring----------*/
+                    else
+                    {
+                        aim.pose.position.x = ring_after[0];
+                        aim.pose.position.y = ring_after[1];      
+                        aim.pose.position.z = ring_after[2];
+                        local_pos_pub.publish(aim);
+
+                        if( (abs(pos_drone_fcu[0] - ring_after[0]) < 0.1) && (abs(pos_drone_fcu[1] - ring_after[1]) < 0.1) && (abs(pos_drone_fcu[2] - ring_after[2]) < 0.1) )
+                        {
+                            flag_ring1 = 1;
+                        }
+                    }
+                }
+
+                if(flag_ring1 == 1)
+                {
+                    aim.pose.position.x = pos_drone_fcu[0];
+                    aim.pose.position.y = pos_drone_fcu[1];      
+                    aim.pose.position.z = 0.1;
+                    local_pos_pub.publish(aim);
+                }
+            }
+
+
+
+            /*----------mission LAND----------*/
+            if(flag_LAND == 1)
+            {
+                /*----------determine wait coordinate----------*/
+                if(flag_land == 0)
+                {
+                    pos_drone_now = Eigen::Vector3d(pos_drone_fcu[0], pos_drone_fcu[1], pos_drone_fcu[2]);
+                    aim.pose.position.x = pos_drone_now[0];
+                    aim.pose.position.y = pos_drone_now[1];      
+                    aim.pose.position.z = pos_drone_now[2];
+                    local_pos_pub.publish(aim);
+                    
+                    flag_land = 1;
+                }
+                
+                /*----------wait and check tag recognition: 10 recognition as successful----------*/
+                if(flag_land == 1)
+                {
+                    aim.pose.position.x = pos_drone_now[0];
+                    aim.pose.position.y = pos_drone_now[1];      
+                    aim.pose.position.z = pos_drone_now[2];
+                    local_pos_pub.publish(aim);
+
+                    if(flag_tag_recog == 1)
+                    {
+                        count_tag = count_tag + 1;
+                        flag_tag_recog = 0;
+                    }
+                    if(count_tag == 10) {flag_land = 2;}
+                }
+
+                /*----------determine tag coordinate----------*/
+                if(flag_land == 2)
+                {
+                    pos_land = Eigen::Vector3d(pos_drone_now[0] + pos_tag[0], pos_drone_now[1] + pos_tag[1], 0.1);
+                    aim.pose.position.x = pos_land[0];
+                    aim.pose.position.y = pos_land[1];      
+                    aim.pose.position.z = pos_land[2];
+                    local_pos_pub.publish(aim);
+
+                    flag_land = 3;
+                }
+
+                /*----------fly towards tag----------*/
+                if(flag_land == 3)
+                {
+                    aim.pose.position.x = pos_land[0];
+                    aim.pose.position.y = pos_land[1];      
+                    aim.pose.position.z = pos_land[2];
+                    local_pos_pub.publish(aim);
+
+                    if( (abs(pos_drone_fcu[0] - pos_land[0]) < 0.1) 
+                     && (abs(pos_drone_fcu[1] - pos_land[1]) < 0.1) 
+                     && (abs(pos_drone_fcu[2] - 0.1) < 0.05) )      {flag_land = 4;}
+                }
+                
+                /*----------land and lock----------*/
+                if(flag_land == 4)
+                {
+                    if(current_state.mode == "OFFBOARD")
+                    {
+                        mode_cmd.request.custom_mode = "Hold";
+                        set_mode_client.call(mode_cmd);
+                        ROS_ERROR("1111");
+                    }
+                    if(current_state.armed)
+                    {
+                        arm_cmd.request.value = false;
+                        arming_client.call(arm_cmd);
+                        ROS_ERROR("2222");
+                    }
+                    if (arm_cmd.response.success)
+                    {
+                        ROS_ERROR("Disarm successfully!");
+                    }
+                }
+            }
+
+
+
+
+
+        }
+
+
+        if(cmdd == 8)
+        {
+            
+//            if(flag_new_traj == 1)
+//            {
+//                traj_p = 0;
+//                flag_new_traj = 0;
+//            }
+            goal.pose.position.x = 3.0;
+            goal.pose.position.y = 0.0;
+            goal.pose.position.z = 0.3;
+               cout<<"fuck"<<endl;
+            traj_goal_pub.publish(goal);
+            
+            cout<<"flag_new_traj="<<flag_new_traj<<endl;
+            if(flag_new_traj == 0)
+            {
+                
+                if(traj_p > 0)
+                {
+                    aim.pose.position.x = traj_fsm.position[traj_p].pose.position.x;
+                    aim.pose.position.y = traj_fsm.position[traj_p].pose.position.y;
+                    aim.pose.position.z = 0.3;
+                    local_pos_pub.publish(aim);
+
+                    traj_p = traj_p - 1;
+                }
+                else
+                {
+                    aim.pose.position.x = traj_fsm.position[0].pose.position.x;
+                    aim.pose.position.y = traj_fsm.position[0].pose.position.y;
+                    aim.pose.position.z = 0.3;
+                    local_pos_pub.publish(aim);
+                }
+                cout<<aim.pose.position.x<<"    "<<aim.pose.position.y<<"    "<<aim.pose.position.z<<endl;
+            }    
+
+        }
+
+
+
         ros::spinOnce();
         rate.sleep();
-   }
+    }
     return 0;
+
 }
 
+
+
+/* yaw:  0 deg      1      0      0      0
+        90 deg    0.707    0      0    0.707
+       180 deg      0      0      0      1
+       -90 deg    0.707    0      0   -0.707    */

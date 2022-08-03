@@ -1,0 +1,46 @@
+<launch>
+  <arg name="traj_order" 		value="3" />
+  <!--<arg name="control_points_number"	value="30" />-->
+  <arg name="dimension" 		value="2" />
+  <arg name="TrajSampleRate" 		value="10" /><!-- 10, 20, 30 , ... ,-->
+  <arg name="beta" 			value="2.0" />
+  <arg name="max_vel" 			value="2" />
+  <arg name="max_acc" 			value="2" />
+  <arg name="start_x" 			value="0.0" />
+  <arg name="start_y" 			value="0.0" />	
+  <arg name="goal_x" 			value="9.0" />
+  <arg name="goal_y" 			value="-10.0" />
+  <arg name="lambda1" 			value="10.0" />
+  <arg name="lambda2" 			value="1.0" />
+  <arg name="lambda3" 			value="5.0" />
+  <arg name="frame" 			value="t265_odom_frame" />
+  <arg name="map_resolution" 		value="0.1" />
+  <arg name="origin_x" 			value="-19.95" />
+  <arg name="origin_y" 			value="-19.95" />
+  <arg name="safe_distance" 		value="6.0" />
+  <!--启动规划器，生成轨迹 -->
+  <node pkg="bspline_race" name="flag_planner" type="flag_planner" output="screen">	
+    <!--<rosparam command="load" file="$(find bspline_opt)/con0fig/initial_final_state.yaml" />-->
+    <param name="planning/traj_order" value="$(arg traj_order)"/>
+   <!-- <param name="planning/control_points_number" value="$(arg control_points_number)" />-->
+    <param name="planning/dimension" value="$(arg dimension)" />
+    <param name="planning/TrajSampleRate" value="$(arg TrajSampleRate)" />
+    <param name="planning/beta" value="$(arg beta)" />
+    <param name="planning/max_vel" value="$(arg max_vel)" />
+    <param name="planning/max_acc" value="$(arg max_acc)" />
+    <param name="planning/start_x" value="$(arg start_x)" />	
+    <param name="planning/start_y" value="$(arg start_y)" />
+    <param name="planning/goal_x" value="$(arg goal_x)" />	
+    <param name="planning/goal_y" value="$(arg goal_y)" />
+    <param name="planning/lambda1" value="$(arg lambda1)" />
+    <param name="planning/lambda2" value="$(arg lambda2)" />
+    <param name="planning/lambda3" value="$(arg lambda3)" />
+    <param name="planning/frame" value="$(arg frame)" />
+    <param name="planning/map_resolution" value="$(arg map_resolution)" />
+    <param name="planning/origin_x" value="$(arg origin_x)" />
+    <param name="planning/origin_y" value="$(arg origin_y)" />
+    <param name="planning/safe_distance" value="$(arg safe_distance)" />
+	
+  </node>
+  <!--启动rviz，可视化显示 -->
+</launch>
