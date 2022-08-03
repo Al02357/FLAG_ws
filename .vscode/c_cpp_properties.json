@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "${default}",
+                "limitSymbolsToIncludedHeaders": false
+            },
+            "includePath": [
+                "/home/flag/FLAG_ws/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/flag/FLAG_ws/src/apriltag_ros/include/**",
+                "/home/flag/FLAG_ws/src/bspline_race/include/**",
+                "/home/flag/FLAG_ws/src/circle_recognition/include/**",
+                "/home/flag/FLAG_ws/src/fsm/include/**",
+                "/home/flag/FLAG_ws/src/grid_path_searcher/include/**",
+                "/home/flag/FLAG_ws/src/mapping/include/**",
+                "/home/flag/FLAG_ws/src/plan_env/include/**",
+                "/home/flag/FLAG_ws/src/realsense_ros_gazebo/include/**",
+                "/home/flag/FLAG_ws/src/remap_node/include/**",
+                "/usr/include/**",
+                "${workspaceFolder}/src/my_fsm/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}
