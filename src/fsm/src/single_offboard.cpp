@@ -129,6 +129,7 @@ void traj_cb(const bspline_race::BsplineTraj::ConstPtr& msg)
         //traj_fsm.position = msg->velocity;
         //traj_acc = msg->acceleration;
         traj_len = msg->position.size();
+        cout<< "~~~~~~~~~~~~~traj_len: "<<traj_len<<"    ~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
         traj_p = traj_len - 1;                                                //???
     }
 
@@ -745,10 +746,10 @@ int main(int argc, char **argv)
             goal.pose.position.x = 3.0;
             goal.pose.position.y = 0.0;
             goal.pose.position.z = 0.3;
-               cout<<"fuck"<<endl;
+            //    cout<<"fuck"<<endl;
             traj_goal_pub.publish(goal);
-            
-            cout<<"flag_new_traj="<<flag_new_traj<<endl;
+            ros::Time time_1 = ros::Time::now();    
+            // cout<<"flag_new_traj="<<flag_new_traj<<endl;
             if(flag_new_traj == 0)
             {
                 
@@ -767,8 +768,11 @@ int main(int argc, char **argv)
                     aim.pose.position.y = traj_fsm.position[0].pose.position.y;
                     aim.pose.position.z = 0.3;
                     local_pos_pub.publish(aim);
+                    ros::Time time_2 = ros::Time::now();
+                    cout<<"END TIME:"<<time_1 - time_2<<endl;
                 }
                 cout<<aim.pose.position.x<<"    "<<aim.pose.position.y<<"    "<<aim.pose.position.z<<endl;
+                
             }    
 
         }

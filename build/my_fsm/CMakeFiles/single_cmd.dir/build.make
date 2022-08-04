@@ -90,6 +90,7 @@ single_cmd_EXTERNAL_OBJECTS =
 
 /home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: my_fsm/CMakeFiles/single_cmd.dir/src/single_cmd.cpp.o
 /home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: my_fsm/CMakeFiles/single_cmd.dir/build.make
+/home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: /home/flag/FLAG_ws/devel/lib/libfsm_func.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: /opt/ros/melodic/lib/libroscpp.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/single_cmd: /opt/ros/melodic/lib/librosconsole.so

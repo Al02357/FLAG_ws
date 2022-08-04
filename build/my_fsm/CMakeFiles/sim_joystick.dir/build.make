@@ -90,6 +90,7 @@ sim_joystick_EXTERNAL_OBJECTS =
 
 /home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: my_fsm/CMakeFiles/sim_joystick.dir/src/sim_joystick.cpp.o
 /home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: my_fsm/CMakeFiles/sim_joystick.dir/build.make
+/home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: /home/flag/FLAG_ws/devel/lib/libfsm_func.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: /opt/ros/melodic/lib/libroscpp.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
 /home/flag/FLAG_ws/devel/lib/my_fsm/sim_joystick: /opt/ros/melodic/lib/librosconsole.so

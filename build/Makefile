@@ -883,6 +883,19 @@ mapping/fast:
 .PHONY : mapping/fast
 
 #=============================================================================
+# Target rules for targets named sim_joystick
+
+# Build rule for target.
+sim_joystick: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sim_joystick
+.PHONY : sim_joystick
+
+# fast build rule for target.
+sim_joystick/fast:
+	$(MAKE) -f my_fsm/CMakeFiles/sim_joystick.dir/build.make my_fsm/CMakeFiles/sim_joystick.dir/build
+.PHONY : sim_joystick/fast
+
+#=============================================================================
 # Target rules for targets named std_srvs_generate_messages_cpp
 
 # Build rule for target.
@@ -948,6 +961,19 @@ std_srvs_generate_messages_py/fast:
 .PHONY : std_srvs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named fsm_func
+
+# Build rule for target.
+fsm_func: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 fsm_func
+.PHONY : fsm_func
+
+# fast build rule for target.
+fsm_func/fast:
+	$(MAKE) -f my_fsm/CMakeFiles/fsm_func.dir/build.make my_fsm/CMakeFiles/fsm_func.dir/build
+.PHONY : fsm_func/fast
+
+#=============================================================================
 # Target rules for targets named std_srvs_generate_messages_nodejs
 
 # Build rule for target.
@@ -959,19 +985,6 @@ std_srvs_generate_messages_nodejs: cmake_check_build_system
 std_srvs_generate_messages_nodejs/fast:
 	$(MAKE) -f my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
 .PHONY : std_srvs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named sim_joystick
-
-# Build rule for target.
-sim_joystick: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sim_joystick
-.PHONY : sim_joystick
-
-# fast build rule for target.
-sim_joystick/fast:
-	$(MAKE) -f my_fsm/CMakeFiles/sim_joystick.dir/build.make my_fsm/CMakeFiles/sim_joystick.dir/build
-.PHONY : sim_joystick/fast
 
 #=============================================================================
 # Target rules for targets named plan_env
@@ -2289,13 +2302,14 @@ help:
 	@echo "... sensor_msgs_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_py"
 	@echo "... mapping"
+	@echo "... sim_joystick"
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... single_cmd"
 	@echo "... std_srvs_generate_messages_eus"
 	@echo "... std_srvs_generate_messages_lisp"
 	@echo "... std_srvs_generate_messages_py"
+	@echo "... fsm_func"
 	@echo "... std_srvs_generate_messages_nodejs"
-	@echo "... sim_joystick"
 	@echo "... plan_env"
 	@echo "... message_remap"
 	@echo "... nav_msgs_generate_messages_py"

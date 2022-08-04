@@ -689,7 +689,7 @@ namespace FLAG_Race
 
     void plan_manager::esdf_map_subCallback(const std_msgs::Float64MultiArrayConstPtr &map_msg)
     {
-        cout<< "get gird map"<<endl;
+        cout<< "get grid map"<<endl;
         get_map = true;
         map_size_x = map_msg->data[0];
         map_size_y = map_msg->data[1];
@@ -727,6 +727,7 @@ namespace FLAG_Race
             }
         }      
         map_slice_output(esdf_map_);
+        // map_slice_output(grid_map_);
         free(dst);
         free(src);
         dst = NULL;
@@ -915,7 +916,7 @@ void plan_manager::map_slice_output(const Eigen::MatrixXd &esdf_matrix)
             geometry_msgs::Point pt;
             pt.x = vox_pos_x;
             pt.y = vox_pos_y;
-            pt.z = -2;
+            pt.z = 0.3;
             marker_result.points.push_back(pt);
 
             /* 计算色彩 */

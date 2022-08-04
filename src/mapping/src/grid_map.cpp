@@ -928,7 +928,7 @@ void GridMap::publishMapInflate(bool all_info)
           if (md_.occupancy_buffer_inflate_[toAddress(x, y, z)] != 0)
           {
 		std::cout<< "111111111111111111111111111111" << std::endl;
-            occupancy_data[data_idx] = 1.0;
+            occupancy_data[data_idx+2] = 1.0;
           } 
         }
       }

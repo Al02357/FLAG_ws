@@ -125,7 +125,7 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/my_fsm.cpp
 # )
-
+add_library(fsm_func src/fsm_func.cpp)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -135,8 +135,11 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/my_fsm_node.cpp)
-add_executable(sim_joystick src/sim_joystick.cpp)
-add_executable(single_cmd src/single_cmd.cpp)
+add_executable(sim_joystick 
+src/sim_joystick.cpp
+)
+
+#add_executable(fsm_func src/fsm_func.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -152,11 +155,17 @@ add_executable(single_cmd src/single_cmd.cpp)
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(sim_joystick
+  fsm_func
   ${catkin_LIBRARIES}
+)
+add_executable(single_cmd 
+src/single_cmd.cpp
 )
 target_link_libraries(single_cmd
+  fsm_func
   ${catkin_LIBRARIES}
 )
+
 #############
 ## Install ##
 #############

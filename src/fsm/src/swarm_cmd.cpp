@@ -227,7 +227,7 @@ void CmddPuber(){
                 break;
             }
             case 99: return ;
-            default: continue;
+            default: break;
         }
         rate.sleep();
 

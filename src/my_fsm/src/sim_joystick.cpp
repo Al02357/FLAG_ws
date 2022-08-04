@@ -9,14 +9,14 @@ int cmd_code;
 bool ros_state = 1;
 using namespace std;
 /*-----------------FUNCTION-----------------*/
-void get_input_cmd(ros::Rate rate)
-{
-    while(ros_state)
-    {
-        cin >> cmd_code;
-        rate.sleep();
-    }
-}
+// void get_input_cmd(ros::Rate rate)
+// {
+//     while(ros_state)
+//     {
+//         cin >> cmd_code;
+//         rate.sleep();
+//     }
+// }
 int main(int argc,char** argv){
     ros::init(argc, argv, "sim_joy");
     ros::NodeHandle nh;
@@ -27,12 +27,11 @@ int main(int argc,char** argv){
     std_msgs::Int32 msg;
     msg.data = 0;
 
-    thread t1(get_input_cmd,rate);
+    // thread t1(get_input_cmd,rate);
     ros_state = ros::ok();
     while(ros_state){
-        cout<<"cmd_code"<<"\n";
-        cout<<cmd_code<<endl;
         ros_state = ros::ok();
+        cin >> cmd_code;
         msg.data = cmd_code;
         joy_pub.publish(msg);
         rate.sleep();

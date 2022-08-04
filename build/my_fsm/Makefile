@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+my_fsm/CMakeFiles/sim_joystick.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 my_fsm/CMakeFiles/sim_joystick.dir/rule
+.PHONY : my_fsm/CMakeFiles/sim_joystick.dir/rule
+
+# Convenience name for target.
+sim_joystick: my_fsm/CMakeFiles/sim_joystick.dir/rule
+
+.PHONY : sim_joystick
+
+# fast build rule for target.
+sim_joystick/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/sim_joystick.dir/build.make my_fsm/CMakeFiles/sim_joystick.dir/build
+.PHONY : sim_joystick/fast
+
+# Convenience name for target.
 my_fsm/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 my_fsm/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule
 .PHONY : my_fsm/CMakeFiles/std_srvs_generate_messages_cpp.dir/rule
@@ -243,6 +258,21 @@ std_srvs_generate_messages_py/fast:
 .PHONY : std_srvs_generate_messages_py/fast
 
 # Convenience name for target.
+my_fsm/CMakeFiles/fsm_func.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 my_fsm/CMakeFiles/fsm_func.dir/rule
+.PHONY : my_fsm/CMakeFiles/fsm_func.dir/rule
+
+# Convenience name for target.
+fsm_func: my_fsm/CMakeFiles/fsm_func.dir/rule
+
+.PHONY : fsm_func
+
+# fast build rule for target.
+fsm_func/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/fsm_func.dir/build.make my_fsm/CMakeFiles/fsm_func.dir/build
+.PHONY : fsm_func/fast
+
+# Convenience name for target.
 my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
 .PHONY : my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
@@ -257,20 +287,32 @@ std_srvs_generate_messages_nodejs/fast:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make my_fsm/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
 .PHONY : std_srvs_generate_messages_nodejs/fast
 
-# Convenience name for target.
-my_fsm/CMakeFiles/sim_joystick.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 my_fsm/CMakeFiles/sim_joystick.dir/rule
-.PHONY : my_fsm/CMakeFiles/sim_joystick.dir/rule
+src/fsm_func.o: src/fsm_func.cpp.o
 
-# Convenience name for target.
-sim_joystick: my_fsm/CMakeFiles/sim_joystick.dir/rule
+.PHONY : src/fsm_func.o
 
-.PHONY : sim_joystick
+# target to build an object file
+src/fsm_func.cpp.o:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/fsm_func.dir/build.make my_fsm/CMakeFiles/fsm_func.dir/src/fsm_func.cpp.o
+.PHONY : src/fsm_func.cpp.o
 
-# fast build rule for target.
-sim_joystick/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/sim_joystick.dir/build.make my_fsm/CMakeFiles/sim_joystick.dir/build
-.PHONY : sim_joystick/fast
+src/fsm_func.i: src/fsm_func.cpp.i
+
+.PHONY : src/fsm_func.i
+
+# target to preprocess a source file
+src/fsm_func.cpp.i:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/fsm_func.dir/build.make my_fsm/CMakeFiles/fsm_func.dir/src/fsm_func.cpp.i
+.PHONY : src/fsm_func.cpp.i
+
+src/fsm_func.s: src/fsm_func.cpp.s
+
+.PHONY : src/fsm_func.s
+
+# target to generate assembly for a file
+src/fsm_func.cpp.s:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f my_fsm/CMakeFiles/fsm_func.dir/build.make my_fsm/CMakeFiles/fsm_func.dir/src/fsm_func.cpp.s
+.PHONY : src/fsm_func.cpp.s
 
 src/sim_joystick.o: src/sim_joystick.cpp.o
 
@@ -338,14 +380,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... install/local"
 	@echo "... test"
+	@echo "... sim_joystick"
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... single_cmd"
 	@echo "... std_srvs_generate_messages_eus"
 	@echo "... std_srvs_generate_messages_lisp"
 	@echo "... edit_cache"
 	@echo "... std_srvs_generate_messages_py"
+	@echo "... fsm_func"
 	@echo "... std_srvs_generate_messages_nodejs"
-	@echo "... sim_joystick"
+	@echo "... src/fsm_func.o"
+	@echo "... src/fsm_func.i"
+	@echo "... src/fsm_func.s"
 	@echo "... src/sim_joystick.o"
 	@echo "... src/sim_joystick.i"
 	@echo "... src/sim_joystick.s"
