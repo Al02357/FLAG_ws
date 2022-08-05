@@ -487,10 +487,10 @@ namespace FLAG_Race
         f_combine = lambda1_ * f_smoothness + lambda2_*f_feasibility + lambda3_*f_distance;
         grad2D = lambda1_*g_smoothness_ + lambda2_ * g_feasibility_ +lambda3_ * g_distance_ ;
         grad = grad2D.block(0,p_order_,Dim_,cps_num_-2*p_order_);//起点  块大小
-        cout<<"f_combine is "<< f_combine<< endl;
-        cout<<"f_smoothness is "<< f_smoothness<< endl;
-        cout<<"f_feasibility is "<< f_feasibility<< endl;
-        cout<<"f_distance is "<< f_distance<< endl;
+        // cout<<"f_combine is "<< f_combine<< endl;
+        // cout<<"f_smoothness is "<< f_smoothness<< endl;
+        // cout<<"f_feasibility is "<< f_feasibility<< endl;
+        // cout<<"f_distance is "<< f_distance<< endl;
     }
 
     double bspline_optimizer::costFunction(const std::vector<double>& x, std::vector<double>& grad,
@@ -679,6 +679,8 @@ namespace FLAG_Race
         //可视化地图
         Map_puber = nh.advertise<visualization_msgs::Marker>("/esdfmap_slice", 10);
 
+        col_check = nh.advertise<std_msgs::Bool>("/col_check",10);
+
     }
 
     void plan_manager::uav_goal_subCallback(const geometry_msgs::PoseStampedConstPtr &goal_msg)
@@ -793,27 +795,27 @@ namespace FLAG_Race
             p_ = p.getTrajectory(p.time_);
             v_ = v.getTrajectory(p.time_);
             a_ = a.getTrajectory(p.time_);
-            cout<<"-----------------------------p_-----------------------------------"<<endl;
+            // cout<<"-----------------------------p_-----------------------------------"<<endl;
             // for(int i = 0;i<p_.rows();i++){
             //     for(int j = 0;j<p_.cols();j++){
             //         cout<<p_(i,j)<<endl;
             //     }
             // }
-            cout<<p_<<endl;
-            cout<<"-----------------------------v_-----------------------------------"<<endl;
+            // cout<<p_<<endl;
+            // cout<<"-----------------------------v_-----------------------------------"<<endl;
             // for(int i = 0;i<v_.rows();i++){
             //     for(int j = 0;j<v_.cols();j++){
             //         cout<<v_(i,j)<<endl;
             //     }
             // }
-            cout<<v_<<endl;
-            cout<<"------------------------------a_----------------------------------"<<endl;
+            // cout<<v_<<endl;
+            // cout<<"------------------------------a_----------------------------------"<<endl;
             // for(int i = 0;i<a_.rows();i++){
             //     for(int j = 0;j<a_.cols();j++){
             //         cout<<a_(i,j)<<endl;
             //     }
             // }
-            cout<<a_<<endl;
+            // cout<<a_<<endl;
             traj.position.clear();
             traj.velocity.clear();
             traj.acceleration.clear();
@@ -871,6 +873,9 @@ namespace FLAG_Race
             //发布期望轨迹
             Traj_puber.publish(traj);
             // get_map = false;
+            std_msgs::Bool check;
+            check.data = checkTrajCollision();
+            col_check.publish(check);
         }
         else
         {
@@ -985,13 +990,15 @@ void plan_manager::map_slice_output(const Eigen::MatrixXd &esdf_matrix)
 bool plan_manager::checkTrajCollision()
 {   
     traj_state state;//判断算出来的轨迹是否安全
-    state == SAFE;
+    state = SAFE;// BUG 。。
     Eigen::Vector2i tmp_index;//
     for (size_t i = 0; i < p_.rows(); i++)
     {
         tmp_index = posToIndex(p_.row(i));
         if(grid_map_(tmp_index(0),tmp_index(1))==1)
         {
+            cout<<"collision point:---------------------------------------"<<endl;
+            cout<<p_.row(i)<<endl;
             state = COLLIDE;
             break;
         }

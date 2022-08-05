@@ -80,6 +80,7 @@ bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o
  /opt/ros/melodic/include/rosconsole/macros_generated.h
  /opt/ros/melodic/include/sensor_msgs/PointCloud2.h
  /opt/ros/melodic/include/sensor_msgs/PointField.h
+ /opt/ros/melodic/include/std_msgs/Bool.h
  /opt/ros/melodic/include/std_msgs/ColorRGBA.h
  /opt/ros/melodic/include/std_msgs/Float64MultiArray.h
  /opt/ros/melodic/include/std_msgs/Header.h

@@ -79,6 +79,8 @@ std_msgs/Float64MultiArray.h
 -
 tf/transform_datatypes.h
 /home/flag/FLAG_ws/src/bspline_race/include/bspline_race/tf/transform_datatypes.h
+std_msgs/Bool.h
+-
 bspline_race/BsplineTraj.h
 -
 bspline_race/EdtTransform.hpp
@@ -1057,6 +1059,22 @@ sensor_msgs/PointField.h
 -
 
 /opt/ros/melodic/include/sensor_msgs/PointField.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/opt/ros/melodic/include/std_msgs/Bool.h
 string
 -
 vector

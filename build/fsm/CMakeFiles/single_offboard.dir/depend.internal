@@ -93,6 +93,7 @@ fsm/CMakeFiles/single_offboard.dir/src/single_offboard.cpp.o
  /opt/ros/melodic/include/sensor_msgs/BatteryState.h
  /opt/ros/melodic/include/sensor_msgs/PointCloud2.h
  /opt/ros/melodic/include/sensor_msgs/PointField.h
+ /opt/ros/melodic/include/std_msgs/Bool.h
  /opt/ros/melodic/include/std_msgs/ColorRGBA.h
  /opt/ros/melodic/include/std_msgs/Float64MultiArray.h
  /opt/ros/melodic/include/std_msgs/Header.h

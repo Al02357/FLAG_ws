@@ -79,6 +79,7 @@ bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodi
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/rosconsole/macros_generated.h
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/sensor_msgs/PointCloud2.h
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/sensor_msgs/PointField.h
+bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/std_msgs/Bool.h
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/std_msgs/ColorRGBA.h
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/std_msgs/Float64MultiArray.h
 bspline_race/CMakeFiles/bspline_race.dir/src/bspline_race.cpp.o: /opt/ros/melodic/include/std_msgs/Header.h

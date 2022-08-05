@@ -79,6 +79,7 @@ bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melod
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/rosconsole/macros_generated.h
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/sensor_msgs/PointCloud2.h
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/sensor_msgs/PointField.h
+bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/std_msgs/Bool.h
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/std_msgs/ColorRGBA.h
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/std_msgs/Float64MultiArray.h
 bspline_race/CMakeFiles/flag_planner.dir/src/test_planning.cpp.o: /opt/ros/melodic/include/std_msgs/Header.h
