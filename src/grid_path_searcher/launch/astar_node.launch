@@ -10,7 +10,7 @@
 
   <node pkg="grid_path_searcher" type="astar_node" name="astar_node" output="screen" required = "true">
      <!-- FIXME 修改remap -->
-      <remap from="~waypoints"       to="/move_base_simple/goal"/>
+      <remap from="~waypoints"       to="/pub_target/target_list"/>
       <remap from="~map"                   to="/grid_map/occupancy"/> 
       <remap from="~pose"                   to="/mavros/local_position/pose"/> 
 

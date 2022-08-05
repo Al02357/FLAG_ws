@@ -59,4 +59,10 @@ target_link_libraries(astar_node
 target_link_libraries(test
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES} )
+    add_executable ( target_pub 
+    src/target_pub.cpp 
+    )
+target_link_libraries(target_pub
+    ${catkin_LIBRARIES}
+    ${PCL_LIBRARIES} )
 

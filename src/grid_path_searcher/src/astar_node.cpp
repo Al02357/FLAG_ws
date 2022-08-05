@@ -40,6 +40,8 @@ bool _has_map   = false;
 bool _has_target   = false;
 Vector2d _start_pt;
 Vector2d _target_pt;
+vector<Vector2d> _target_list;
+vector<Vector2d> _path_list;
 double actual_height = 0.0;
 // Map size
 Vector2d _map_lower, _map_upper;
@@ -133,39 +135,65 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2::ConstPtr & pointcloud
     map_vis.header.frame_id = "t265_odom_frame";
     _grid_map_vis_pub.publish(map_vis);//demo_node/grid_map_vis
     // 可视化end
-
+    auto save_target = _target_pt;
     _has_map = true;
     cout<<"[Astar] Pointcloud received."<<endl;
-
+    int i = 0;
     if(!_has_target)
     {
         ROS_WARN("[Astar] No target!");
     }else  {
-        if(_astar_path_finder -> getData(_target_pt)) ROS_ERROR("[Astar] _target_pt is Occupied! PathFinding will not run!");
-        else {
-        if(_astar_path_finder->getData(_start_pt)) 
+        
+        _path_list.clear();
+        for(auto iter = _target_list.begin();iter != _target_list.end();iter++)
         {
-            ROS_WARN("[Astar] _start_pt is Occupied! Reset Obs. BE CAREFUL!");
-            _astar_path_finder -> cleanStartObs(_start_pt);
+            _target_pt = *(iter);
+            cout<<"pub_grid_twist: _______________" << i++<<endl;
+            cout<<"current_start="<<_start_pt<<endl;
+            cout<<"current_target="<<*(iter)<<endl;
+            if(_astar_path_finder -> getData(_target_pt)) ROS_ERROR("[Astar] _target_pt is Occupied! PathFinding will not run!");
+            else {
+            if(_astar_path_finder->getData(_start_pt)) 
+            {
+                ROS_WARN("[Astar] _start_pt is Occupied! Reset Obs. BE CAREFUL!");
+                _astar_path_finder -> cleanStartObs(_start_pt);
+            }
+            if(!pathFinding(_start_pt, _target_pt)) ROS_ERROR("[Astar] No path provide!"); 
+            }
+            _start_pt = _target_pt;
+
+
         }
-        if(!pathFinding(_start_pt, _target_pt)) ROS_ERROR("[Astar] No path provide!"); 
-        }
+        _start_pt = save_target;
+        //Visualize the result
+        pubGridTwist(_path_list);
+        
+
+        //Reset map for next call
+        _astar_path_finder->resetUsedGrids();
+
     }
 }
 
-void rcvWaypointsCallback(const geometry_msgs::PoseStamped::ConstPtr & wp)
+void rcvWaypointsCallback(const nav_msgs::Path::ConstPtr & wp)
 {     
-    //USAGE 拿到waypoint消息后，检查并进行路径寻找
-    //起点为全局变量_start_pt，终点为消息中的waypoint
+    _target_list.clear();
+    Vector2d ptr_;
+    geometry_msgs::PoseStamped pos_ptr;
     if( _has_map == false ) //无地图，退出函数
     {
         ROS_WARN("[Astar] No map! ");
         // return;
     }
-    cout<<"[Astar] Planning target received."<<endl;
-    // Vector2d _target_pt;
-    _target_pt << wp->pose.position.x,
-                              wp->pose.position.y;
+    cout<<"[Astar] Planning target list received."<<endl;
+    for(auto iter = wp->poses.begin();iter!=wp->poses.end();iter++)
+    {
+        pos_ptr = *(iter);
+        ptr_(0) = pos_ptr.pose.position.x;
+        ptr_(1) = pos_ptr.pose.position.y;
+        _target_list.push_back(ptr_);
+    }
+
     _has_target = true;
     // ROS_INFO("[node] receive the planning target");
     // pathFinding(_start_pt, target_pt); 
@@ -184,21 +212,10 @@ bool pathFinding(const Vector2d start_pt, const Vector2d target_pt)
     //Call A* to search for a path
     cout<<"[Astar] PathFinding start."<<endl;
     if(!_astar_path_finder->AstarGraphSearch(start_pt, target_pt)) return 0;
-
     //Retrieve the path
-
-    auto grid_path     = _astar_path_finder->getPath();
     auto grid_twist    = _astar_path_finder->getTwist3();
-    auto visited_nodes = _astar_path_finder->getVisitedNodes();
 
-    //Visualize the result
-    visGridPath (grid_path, false);
-    visVisitedNode(visited_nodes);
-    pubGridPath(grid_path);
-    pubGridTwist(grid_twist);
-
-    //Reset map for next call
-    _astar_path_finder->resetUsedGrids();
+    _path_list.insert(_path_list.end(),grid_twist.begin(),grid_twist.end());
     return 1;
 }
 /*----------------------main----------------------*/

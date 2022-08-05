@@ -80,6 +80,18 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -112,18 +124,6 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
 # The main all target
 all: cmake_check_build_system
 	cd /home/flag/FLAG_ws/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/flag/FLAG_ws/build/CMakeFiles /home/flag/FLAG_ws/build/grid_path_searcher/CMakeFiles/progress.marks
@@ -155,6 +155,21 @@ preinstall/fast:
 depend:
 	cd /home/flag/FLAG_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+# Convenience name for target.
+grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_cpp: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_cpp
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_cpp/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
+.PHONY : actionlib_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_py.dir/rule:
@@ -307,6 +322,21 @@ test/fast:
 .PHONY : test/fast
 
 # Convenience name for target.
+grid_path_searcher/CMakeFiles/target_pub.dir/rule:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/target_pub.dir/rule
+.PHONY : grid_path_searcher/CMakeFiles/target_pub.dir/rule
+
+# Convenience name for target.
+target_pub: grid_path_searcher/CMakeFiles/target_pub.dir/rule
+
+.PHONY : target_pub
+
+# fast build rule for target.
+target_pub/fast:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/target_pub.dir/build.make grid_path_searcher/CMakeFiles/target_pub.dir/build
+.PHONY : target_pub/fast
+
+# Convenience name for target.
 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
 .PHONY : grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
@@ -320,21 +350,6 @@ nav_msgs_generate_messages_lisp: grid_path_searcher/CMakeFiles/nav_msgs_generate
 nav_msgs_generate_messages_lisp/fast:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make grid_path_searcher/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
 .PHONY : nav_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-.PHONY : grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_cpp: grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_cpp
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_cpp/fast:
-	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make grid_path_searcher/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
-.PHONY : actionlib_msgs_generate_messages_cpp/fast
 
 src/Astar_searcher_2d.o: src/Astar_searcher_2d.cpp.o
 
@@ -390,6 +405,33 @@ src/astar_node.cpp.s:
 	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/astar_node.dir/build.make grid_path_searcher/CMakeFiles/astar_node.dir/src/astar_node.cpp.s
 .PHONY : src/astar_node.cpp.s
 
+src/target_pub.o: src/target_pub.cpp.o
+
+.PHONY : src/target_pub.o
+
+# target to build an object file
+src/target_pub.cpp.o:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/target_pub.dir/build.make grid_path_searcher/CMakeFiles/target_pub.dir/src/target_pub.cpp.o
+.PHONY : src/target_pub.cpp.o
+
+src/target_pub.i: src/target_pub.cpp.i
+
+.PHONY : src/target_pub.i
+
+# target to preprocess a source file
+src/target_pub.cpp.i:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/target_pub.dir/build.make grid_path_searcher/CMakeFiles/target_pub.dir/src/target_pub.cpp.i
+.PHONY : src/target_pub.cpp.i
+
+src/target_pub.s: src/target_pub.cpp.s
+
+.PHONY : src/target_pub.s
+
+# target to generate assembly for a file
+src/target_pub.cpp.s:
+	cd /home/flag/FLAG_ws/build && $(MAKE) -f grid_path_searcher/CMakeFiles/target_pub.dir/build.make grid_path_searcher/CMakeFiles/target_pub.dir/src/target_pub.cpp.s
+.PHONY : src/target_pub.cpp.s
+
 src/test.o: src/test.cpp.o
 
 .PHONY : src/test.o
@@ -425,6 +467,8 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... install"
+	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... nav_msgs_generate_messages_py"
 	@echo "... nav_msgs_generate_messages_cpp"
 	@echo "... nav_msgs_generate_messages_nodejs"
@@ -436,17 +480,19 @@ help:
 	@echo "... actionlib_msgs_generate_messages_py"
 	@echo "... astar_node"
 	@echo "... test"
+	@echo "... target_pub"
 	@echo "... nav_msgs_generate_messages_lisp"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... actionlib_msgs_generate_messages_cpp"
-	@echo "... install"
 	@echo "... src/Astar_searcher_2d.o"
 	@echo "... src/Astar_searcher_2d.i"
 	@echo "... src/Astar_searcher_2d.s"
 	@echo "... src/astar_node.o"
 	@echo "... src/astar_node.i"
 	@echo "... src/astar_node.s"
+	@echo "... src/target_pub.o"
+	@echo "... src/target_pub.i"
+	@echo "... src/target_pub.s"
 	@echo "... src/test.o"
 	@echo "... src/test.i"
 	@echo "... src/test.s"
